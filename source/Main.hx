@@ -5,8 +5,9 @@ import openfl.display.Sprite;
 
 /**
  * The main entry point of the game. You don't need to modify this class.
- * If you want to change the setup for the game, you can do so by changing
- * the `InitState.hx` class and doing whatever you want from there.
+ * Unless you want to change settings for the game (i.e., window size), you can
+ * add or change the setup by modifying the `InitState.hx` class and 
+ * doing whatever you want from there.
  */
 class Main extends Sprite {
 
@@ -14,8 +15,10 @@ class Main extends Sprite {
 	// for the FlxGame instance
 	private static final _GAME:Dynamic = {
 		// The width of the game's window
+		// You can keep this at 0 to use the default value in the Project.xml file
 		width: 0,
 		// The height of the game's window
+		// You can keep this at 0 to use the default value in the Project.xml file
 		height: 0,
 		// The class that will be used as the initial state
 		initialState: InitState,
