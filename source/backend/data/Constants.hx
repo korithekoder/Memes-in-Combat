@@ -31,4 +31,26 @@ class Constants {
      * The name of the save file for the player's controls.
      */
     public static final CONTROLS_SAVE_BIND_ID:String = 'controls';
+
+    /**
+     * The splash texts that are displayed on the main menu.
+     * Each array contains two strings that are displayed on the screen.
+     * Note that any extra strings after the first two will be ignored.
+     */
+    public static final SPLASH_TEXTS:Array<Array<String>> = [
+        ['we gonna do', 'this thang'],
+        ['bruh', 'moment'],
+        ['I', 'AM STEVE'],
+        ['I am gonna', 'tickle your toes :3'],
+        ['why the fuck', 'are you playing this game??'],
+        ['friday night funkin', 'peak rhythm game imo'],
+        ['you\'re dead built', 'like an apple'],
+        ['swag shit', 'money money'],
+        ['uwu', 'owo'],
+        ['if you\'re reading this', 'you like men'],
+        ['eeeeeeeuuuuuuuuuuuuuu', 'mmmmmmhhhhhhhhhh'],
+        ['eeeeeeeeeeeeeeeeeeeeeeeee', 'eeeeeeeeeeeeeeeeeeeeeeeee'],
+        ['i\'m gonna crash', 'the fuck out'],
+        ['inspired by', 'noobs in combat']
+    ];
 }

@@ -53,10 +53,6 @@ class InitState extends FlxState {
 		// Set the default font
 		FlxAssets.FONT_DEFAULT = PathUtil.ofFont('impact');
 
-		// Set the background to be white
-		// Prepare to be blinded lol
-		FlxG.camera.bgColor = FlxColor.WHITE;
-
 		// Set the stage and scaling modes
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;

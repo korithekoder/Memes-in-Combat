@@ -15,6 +15,16 @@ class PathUtil {
     }
 
     /**
+     * Get the path of a music soundtrack asset.
+     * 
+     * @param name The name of the soundtrack (this does not include the file extenstion).
+     * @return     The path of the soundtrack.
+     */
+    public static inline function ofMusic(name:String):String {
+        return 'assets/shared/music/' + '$name' + #if html5 '.mp3' #else '.ogg' #end;
+    }
+
+    /**
      * Get the full pathway to the game's save folder.
      * 
      * @param trailingPath The path to concatenate with the save path.

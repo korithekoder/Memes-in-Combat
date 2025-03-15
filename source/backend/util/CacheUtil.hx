@@ -10,4 +10,9 @@ class CacheUtil {
      * The last volume that the player had set before the game loses focus.
      */
     public static var lastVolumeUsed:Float;
+
+    /**
+     * Did the user already see the intro?
+     */
+    public static var alreadySawIntro:Bool = false;
 }
