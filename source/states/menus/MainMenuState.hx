@@ -1,5 +1,8 @@
 package states.menus;
 
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.ui.FlxButton;
+import flixel.FlxSprite;
 import backend.data.Constants;
 import flixel.util.FlxTimer;
 import backend.util.CacheUtil;
@@ -24,13 +27,26 @@ class MainMenuState extends FlxState {
     var introStageTimer2:FlxTimer = new FlxTimer();
 
     var chosenSplashText:Array<String> = Constants.SPLASH_TEXTS[FlxG.random.int(0, Constants.SPLASH_TEXTS.length - 1)];
-    // var chosenSplashText:Array<String> = Constants.SPLASH_TEXTS[Constants.SPLASH_TEXTS.length - 1];
+
+    var flashbang:FlxSprite;
+
+    var goofyAhhTroll:FlxSprite;
+
+    var buttonGroup:FlxTypedGroup<FlxText>;
+
+    var campaignButton:FlxText;
+    var exitButton:FlxText;
+
+    var buttonTween:FlxTween;
+
+    var lastHoveredButton:FlxText;
 
     override public function create() {
 
         // Start the main menu music
         FlxG.sound.playMusic(PathUtil.ofMusic('Jam Out By Myself'), 1, true);
 
+        // Setup and add the title text
         titleText = new FlxText('Memes in Combat');
         titleText.size = 90;
         titleText.color = FlxColor.WHITE;
@@ -40,10 +56,12 @@ class MainMenuState extends FlxState {
         titleText.visible = CacheUtil.alreadySawIntro;
         add(titleText);
 
+        // Setup and add the intro text
         introText = new FlxText();
         introText.size = 60;
         add(introText);
 
+        // Setup and add the "Press any key to skip" text
         pressAnyKeyText = new FlxText('Press any key to skip');
         pressAnyKeyText.size = 20;
         pressAnyKeyText.alignment = FlxTextAlign.CENTER;
@@ -51,15 +69,52 @@ class MainMenuState extends FlxState {
         pressAnyKeyText.alpha = 0;
         add(pressAnyKeyText);
 
+        // Setup and add the goofy goober that on the main menu
+        goofyAhhTroll = new FlxSprite(0, 0);
+        goofyAhhTroll.loadGraphic(PathUtil.ofImage('intro_troll'));
+        goofyAhhTroll.updateHitbox();
+        goofyAhhTroll.x = FlxG.width + goofyAhhTroll.width;
+        goofyAhhTroll.y = FlxG.height - goofyAhhTroll.height - 40;
+        add(goofyAhhTroll);
+
+        // Setup the button group
+        buttonGroup = new FlxTypedGroup<FlxText>();
+        buttonGroup.visible = false;
+        add(buttonGroup);
+
+        // Setup and add the campaign button
+        campaignButton = new FlxText(80, (FlxG.height / 2) + 20, 'Campaign');
+        campaignButton.size = 45;
+        campaignButton.updateHitbox();
+        campaignButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
+        buttonGroup.add(campaignButton);
+
+        // Setup and add the exit button
+        exitButton = new FlxText(80, (FlxG.height / 2) + 100, 'Quit Game');
+        exitButton.size = 45;
+        exitButton.updateHitbox();
+        exitButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
+        buttonGroup.add(exitButton);
+
+        // Setup and add the flash that appears when the main menu is shown
+        flashbang = new FlxSprite(0, 0);
+        flashbang.makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
+        flashbang.alpha = 0;
+        add(flashbang);
+
+        // Start the title text tween that makes it somewhat like a seesaw
         FlxTween.angle(titleText, -8, 8, 2.1, {
             type: FlxTweenType.PINGPONG,
             ease: FlxEase.quadInOut
         });
 
+        // Start the "Press any key to skip" text tween that makes it fade in
         FlxTween.tween(pressAnyKeyText, { alpha: 1 }, 2, {
             type: FlxTweenType.ONESHOT
         });
 
+        // Start the intro if the player hasn't seen it yet
+        // (This is for when the player goes back to the main menu)
         if (!CacheUtil.alreadySawIntro) {
             _startIntro();
         }
@@ -67,8 +122,50 @@ class MainMenuState extends FlxState {
 
     override public function update(elapsed:Float) {
         super.update(elapsed);
-        if (FlxG.keys.justPressed.ANY) {
-            _setupMainMenu();
+
+        // If the player hasn't seen the intro yet, they can skip it by pressing any key
+        if (!CacheUtil.alreadySawIntro) {
+            if (FlxG.keys.justPressed.ANY) {
+                _setupMainMenu();
+            }
+        } else {
+            // Loop through each button in the button group
+            for (button in buttonGroup.members) {
+                // If the mouse is hovering over the button, then
+                // tween the button to make it look like it's being hovered
+                if (FlxG.mouse.overlaps(button)) {
+                    // Make sure the button isn't already being hovered, otherwise
+                    // some crazy shit will happen!
+                    if (lastHoveredButton != button) {
+                        // Play a sound
+                        FlxG.sound.play(PathUtil.ofSound('blip'));
+                        lastHoveredButton = button;
+                        // Tween the button to move to the right of the screen
+                        buttonTween = FlxTween.tween(button, { x: 200 }, 0.2, {
+                            type: FlxTweenType.PERSIST,
+                            ease: FlxEase.quadOut
+                        });
+                    }
+                    // If the button has been clicked, then
+                    // do the action that is linked with the said button
+                    if (FlxG.mouse.justReleased) {
+                        if (button == campaignButton) {
+                            trace('Campaign button clicked');
+                        } else if (button == exitButton) {
+                            Sys.exit(0);
+                        }
+                    }
+                } else if (lastHoveredButton == button) {
+                    lastHoveredButton = null;
+                    // Cancel the tween if the mouse is no longer hovering over the button
+                    buttonTween.cancel();
+                    // Tween the button back to its original position
+                    FlxTween.tween(button, { x: 80 }, 0.2, {
+                        type: FlxTweenType.PERSIST,
+                        ease: FlxEase.quadOut
+                    });
+                }
+            }
         }
     }
 
@@ -148,9 +245,28 @@ class MainMenuState extends FlxState {
         introText.visible = false;
         titleText.visible = true;
         pressAnyKeyText.visible = false;
+
         FlxG.camera.bgColor = FlxColor.WHITE;
         CacheUtil.alreadySawIntro = true;
+
         introStageTimer1.cancel();
         introStageTimer2.cancel();
+
+        buttonGroup.visible = true;
+
+        flashbang.alpha = 1;
+        FlxTween.tween(flashbang, { alpha: 0 }, 3, {
+            type: FlxTweenType.ONESHOT
+        });
+
+        new FlxTimer().start(
+            1.75,
+            (timer:FlxTimer) -> {
+                FlxTween.tween(goofyAhhTroll, { x: FlxG.width - goofyAhhTroll.width - 20 }, 2, {
+                    type: FlxTweenType.PERSIST,
+                    ease: FlxEase.quadOut
+                });
+            }
+        );
     }
 }

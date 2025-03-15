@@ -51,6 +51,14 @@ class Constants {
         ['eeeeeeeuuuuuuuuuuuuuu', 'mmmmmmhhhhhhhhhh'],
         ['eeeeeeeeeeeeeeeeeeeeeeeee', 'eeeeeeeeeeeeeeeeeeeeeeeee'],
         ['i\'m gonna crash', 'the fuck out'],
-        ['inspired by', 'noobs in combat']
+        ['inspired by', 'noobs in combat'],
+        ['where is', 'my goddamn money'],
+        ['how do you 20 pairs of pants', 'and 3 pairs of underwear???'],
+        ['"please don\'t scam meeeeeeeee"', '-dfam 3/14/2025'],
+        ['"be a good kitty and stop running away"', '-kori 3/8/2025'],
+        ['"little goober, STOP" -kori', '"did you say little GOONER?!" -vixen'],
+        ['"*skibidi"', '-kori 3/1/2025'],
+        ['"get your twink out of my house of god"', '-kira 2/24/2025'],
+        ['"CUMpany"', '-dfam 2/21/2025']
     ];
 }

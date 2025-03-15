@@ -5,6 +5,16 @@ import flixel.FlxG;
 class PathUtil {
     
     /**
+     * Get the path of an image asset.
+     * 
+     * @param name The name of the image (this does not include the file extenstion).
+     * @return     The path of the image.
+     */
+    public static inline function ofImage(name:String):String {
+        return 'assets/shared/images/' + '$name.png';
+    }
+
+    /**
      * Get the path of a font asset.
      * 
      * @param name The name of the font (this does not include the file extenstion).
@@ -12,6 +22,16 @@ class PathUtil {
      */
     public static inline function ofFont(name:String):String {
         return 'assets/fonts/' + '$name.ttf';
+    }
+
+    /**
+     * Get the path of a sound effect asset.
+     * 
+     * @param name The name of the sound effect (this does not include the file extenstion).
+     * @return     The path of the sound effect.
+     */
+    public static inline function ofSound(name:String):String {
+        return 'assets/shared/sounds/' + '$name' + #if html5 '.mp3' #else '.ogg' #end;
     }
 
     /**

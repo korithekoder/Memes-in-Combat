@@ -95,6 +95,10 @@ class InitState extends FlxState {
 		Application.current.window.onClose.add(() -> {
 			// Save all of the user's data
 			SaveUtil.saveAll();
+
+			// Set the game's volume regardless if the game's volume
+			// is minimized before it is saved
+			FlxG.sound.volume = CacheUtil.lastVolumeUsed;
 		});
 	}
 }
