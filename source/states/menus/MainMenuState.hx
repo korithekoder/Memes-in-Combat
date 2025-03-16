@@ -1,7 +1,9 @@
 package states.menus;
 
+#if DISCORD_ALLOWED
+import backend.api.DiscordClient;
+#end
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.ui.FlxButton;
 import flixel.FlxSprite;
 import backend.data.Constants;
 import flixel.util.FlxTimer;
@@ -89,12 +91,14 @@ class MainMenuState extends FlxState {
         campaignButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
         buttonGroup.add(campaignButton);
 
+        #if desktop // Exiting only works on desktop!
         // Setup and add the exit button
         exitButton = new FlxText(80, (FlxG.height / 2) + 100, 'Quit Game');
         exitButton.size = 45;
         exitButton.updateHitbox();
         exitButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
         buttonGroup.add(exitButton);
+        #end
 
         // Setup and add the flash that appears when the main menu is shown
         flashbang = new FlxSprite(0, 0);
@@ -112,6 +116,11 @@ class MainMenuState extends FlxState {
         FlxTween.tween(pressAnyKeyText, { alpha: 1 }, 2, {
             type: FlxTweenType.ONESHOT
         });
+
+        // Set the Discord rich presence
+        #if DISCORD_ALLOWED
+        DiscordClient.setPresence("Main Menu");
+        #end
 
         // Start the intro if the player hasn't seen it yet
         // (This is for when the player goes back to the main menu)
@@ -133,7 +142,8 @@ class MainMenuState extends FlxState {
             for (button in buttonGroup.members) {
                 // If the mouse is hovering over the button, then
                 // tween the button to make it look like it's being hovered
-                if (FlxG.mouse.overlaps(button)) {
+                // (this line is so long oml)
+                if (FlxG.mouse.overlaps(button) || ((FlxG.mouse.x >= 80) && (FlxG.mouse.y >= button.y) && (FlxG.mouse.y <= button.y + button.height) && (FlxG.mouse.x <= button.x + button.width) && (lastHoveredButton == button))) {
                     // Make sure the button isn't already being hovered, otherwise
                     // some crazy shit will happen!
                     if (lastHoveredButton != button) {
@@ -149,10 +159,12 @@ class MainMenuState extends FlxState {
                     // If the button has been clicked, then
                     // do the action that is linked with the said button
                     if (FlxG.mouse.justReleased) {
-                        if (button == campaignButton) {
+                        if (button == campaignButton) {  // Campaign button action
                             trace('Campaign button clicked');
-                        } else if (button == exitButton) {
+                        } else if (button == exitButton) {  // Exit button action
+                            #if desktop
                             Sys.exit(0);
+                            #end
                         }
                     }
                 } else if (lastHoveredButton == button) {
@@ -160,7 +172,7 @@ class MainMenuState extends FlxState {
                     // Cancel the tween if the mouse is no longer hovering over the button
                     buttonTween.cancel();
                     // Tween the button back to its original position
-                    FlxTween.tween(button, { x: 80 }, 0.2, {
+                    buttonTween = FlxTween.tween(button, { x: 80 }, 0.2, {
                         type: FlxTweenType.PERSIST,
                         ease: FlxEase.quadOut
                     });
@@ -186,7 +198,9 @@ class MainMenuState extends FlxState {
         );
 
         new FlxTimer().start(
+            // Time
             22.5,
+            // Callback
             (timer:FlxTimer) -> {
                 introStageTimer2.start(
                     0.5,

@@ -1,5 +1,8 @@
 package;
 
+#if DISCORD_ALLOWED
+import backend.api.DiscordClient;
+#end
 import backend.Controls;
 import backend.data.ClientPrefs;
 import backend.util.CacheUtil;
@@ -10,7 +13,6 @@ import flixel.FlxState;
 import flixel.math.FlxMath;
 import flixel.system.FlxAssets;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
 import lime.app.Application;
 import openfl.Lib;
 import openfl.display.StageScaleMode;
@@ -34,6 +36,10 @@ class InitState extends FlxState {
 		// Removing this line will cause a bunch of null errors,
 		// so it's extremely important to keep this line here!
 		ClientPrefs.loadAll();
+
+		#if DISCORD_ALLOWED
+		DiscordClient.setup();
+		#end
 
 		// Center the window to be in the middle of the display
 		Application.current.window.x = Std.int((Application.current.window.display.bounds.width - Application.current.window.width) / 2);
