@@ -1,5 +1,9 @@
 package;
 
+import backend.data.Constants;
+import flixel.util.FlxColor;
+import flixel.addons.transition.TransitionData;
+import flixel.addons.transition.FlxTransitionableState;
 #if DISCORD_ALLOWED
 import backend.api.DiscordClient;
 #end
@@ -37,8 +41,11 @@ class InitState extends FlxState {
 		// so it's extremely important to keep this line here!
 		ClientPrefs.loadAll();
 
+		// Setup Discord rich presence
 		#if DISCORD_ALLOWED
-		DiscordClient.setup();
+		if (ClientPrefs.options.discordRPC) {
+			DiscordClient.setup();
+		}
 		#end
 
 		// Center the window to be in the middle of the display
@@ -62,6 +69,9 @@ class InitState extends FlxState {
 		// Set the stage and scaling modes
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+
+		// Set the transition effect when switching states
+		FlxTransitionableState.defaultTransIn = new TransitionData(FlxColor.BLACK, Constants.TRANSITION_DURATION);
 	}
 
 	private static function _addEventListeners():Void {

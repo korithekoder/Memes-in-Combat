@@ -19,6 +19,7 @@ class Constants {
         'm_right'    => FlxKey.D,
 
         // Other
+        'back'       => FlxKey.ESCAPE,
         'fullscreen' => FlxKey.F11
     ];
     
@@ -59,6 +60,12 @@ class Constants {
         ['"little goober, STOP" -kori', '"did you say little GOONER?!" -vixen'],
         ['"*skibidi"', '-kori 3/1/2025'],
         ['"get your twink out of my house of god"', '-kira 2/24/2025'],
-        ['"CUMpany"', '-dfam 2/21/2025']
+        ['"CUMpany"', '-dfam 2/21/2025'],
+        ['"YOUCH!! *says in a zesty tone*"', '-dfam 3/16/2025']
     ];
+
+    /**
+     * How long it takes for the fade effect to last when switching states.
+     */
+    public static final TRANSITION_DURATION:Float = 0.4;
 }

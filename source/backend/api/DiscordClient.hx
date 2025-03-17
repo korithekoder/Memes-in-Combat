@@ -1,6 +1,7 @@
 package backend.api;
 
 #if DISCORD_ALLOWED
+import flixel.FlxG;
 import cpp.RawConstPointer;
 import hxdiscord_rpc.Discord;
 import hxdiscord_rpc.Types.DiscordRichPresence;
@@ -22,7 +23,7 @@ class DiscordClient {
     public static function setup():Void {
         // Initialize the client
         Discord.Initialize(_clientId, null, true, null);
-        // Start the timer (for the amount of time the player has played Anima)
+        // Start the timer (for the amount of time the player has played the game)
         _presence.startTimestamp = Math.floor(Sys.time());
 
         // Start a thread that runs in the background which
@@ -41,7 +42,7 @@ class DiscordClient {
         // when the game closes
         Application.current.window.onClose.add(() -> {
             Discord.Shutdown();
-            trace('Shutdown Discord rich presence successfully!');
+            FlxG.log.add('Discord rich presence shut down successfully!');
         });
     }
 

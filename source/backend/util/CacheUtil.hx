@@ -15,4 +15,9 @@ class CacheUtil {
      * Did the user already see the intro?
      */
     public static var alreadySawIntro:Bool = false;
+
+    /**
+     * Can the game play menu music when the user leaves gameplay?
+     */
+    public static var canPlayMenuMusic:Bool = true;
 }

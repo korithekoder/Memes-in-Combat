@@ -2,12 +2,15 @@ package backend.util;
 
 import flixel.FlxG;
 
+/**
+ * Utility class that creates and returns paths to assets or other files.
+ */
 class PathUtil {
     
     /**
      * Get the path of an image asset.
      * 
-     * @param name The name of the image (this does not include the file extenstion).
+     * @param name The name of the image (this does not include the file extension).
      * @return     The path of the image.
      */
     public static inline function ofImage(name:String):String {
@@ -17,7 +20,7 @@ class PathUtil {
     /**
      * Get the path of a font asset.
      * 
-     * @param name The name of the font (this does not include the file extenstion).
+     * @param name The name of the font (this does not include the file extension).
      * @return     The path of the font.
      */
     public static inline function ofFont(name:String):String {
@@ -27,7 +30,7 @@ class PathUtil {
     /**
      * Get the path of a sound effect asset.
      * 
-     * @param name The name of the sound effect (this does not include the file extenstion).
+     * @param name The name of the sound effect (this does not include the file extension).
      * @return     The path of the sound effect.
      */
     public static inline function ofSound(name:String):String {
@@ -37,7 +40,7 @@ class PathUtil {
     /**
      * Get the path of a music soundtrack asset.
      * 
-     * @param name The name of the soundtrack (this does not include the file extenstion).
+     * @param name The name of the soundtrack (this does not include the file extension).
      * @return     The path of the soundtrack.
      */
     public static inline function ofMusic(name:String):String {

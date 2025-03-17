@@ -11,9 +11,14 @@ import haxe.Exception;
 @:structInit class SaveVariables {
 
     /**
-     * Should the game minimize its volume when the winodw is out of focus?
+     * Should the game minimize its volume when the window is out of focus?
      */
     public var minimizeVolume:Bool = true;
+
+    /**
+     * Should the game display in the client's Discord "Activity" box?
+     */
+    public var discordRPC:Bool = true;
 }
 
 /**
@@ -21,7 +26,7 @@ import haxe.Exception;
  * preferences and settings.
  * 
  * When you are updating a setting, do *NOT* do it
- * manually. Instead, use `setClientPreference()` to update a user's prefence(s)
+ * manually. Instead, use `setClientPreference()` to update a user's preference(s)
  * or `setClientControl()` to change a bind.
  * 
  * Controls are saved in their own variable, *NOT* in `options`.
@@ -30,7 +35,7 @@ import haxe.Exception;
  * To create a control, go to `backend.data.Constants`, search for `DEFAULT_CONTROLS_KEYBOARD`
  * and then add your controls accordingly.
  * 
- * To access controls, use `backend.data.Controls`. (**TIP**: Read `backend.data.Controls`'s
+ * To access controls, use `backend.Controls`. (**TIP**: Read `backend.Controls`'s
  * documentation for accessing if binds are pressed!)
  */
 class ClientPrefs {
@@ -79,7 +84,7 @@ class ClientPrefs {
         try {
 			Reflect.setField(_options, setting, value);
         } catch (e:Exception) {
-            FlxG.log.warn("Attempted to change non-existant option \"" + setting + "\", ignoring change...");
+            FlxG.log.warn("Attempted to change non-existent option \"" + setting + "\", ignoring change...");
         }
     }
 
@@ -93,7 +98,7 @@ class ClientPrefs {
         if (_controlsKeyboard.exists(bindId)) {
 			_controlsKeyboard.set(bindId, newKey);
         } else {
-            FlxG.log.warn("Attempted to change non-existant bind \"" + bindId + "\", ignoring change...");
+            FlxG.log.warn("Attempted to change non-existent bind \"" + bindId + "\", ignoring change...");
         }
     }
 

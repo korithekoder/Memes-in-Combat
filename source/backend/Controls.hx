@@ -28,7 +28,7 @@ import flixel.FlxG;
  * ```haxe
  * // Notice how the variables are public and non static, while
  * // the functions are private and inline. Technically inline isn't
- * // required, but it's very good for preformance since it's just
+ * // required, but it's very good for performance since it's just
  * // a simple return statement
  * public var YOUR_BIND_PRESSED(get, never):Bool;
  * public var YOUR_BIND_JUST_PRESSED(get, never):Bool;
@@ -51,7 +51,9 @@ class Controls {
     private inline function get_M_RIGHT_PRESSED():Bool return pressed('m_right');
 
     // Other (just pressed)
+    public var BACK_JUST_PRESSED(get, never):Bool;
     public var FULLSCREEN_JUST_PRESSED(get, never):Bool;
+    private inline function get_BACK_JUST_PRESSED():Bool return justPressed('back');
     private inline function get_FULLSCREEN_JUST_PRESSED():Bool return justPressed('fullscreen');
 
     /**
