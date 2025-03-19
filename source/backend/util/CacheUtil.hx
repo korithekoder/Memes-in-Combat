@@ -20,4 +20,14 @@ class CacheUtil {
      * Can the game play menu music when the user leaves gameplay?
      */
     public static var canPlayMenuMusic:Bool = true;
+
+	/**
+	 * Is the game's window focused?
+	 */
+	public static var isFocused:Bool = true;
+
+    /**
+     * The years that the player has unlocked.
+     */
+    public static var unlockedYears:Array<String> = ['Tutorial'];
 }

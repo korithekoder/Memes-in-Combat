@@ -102,14 +102,12 @@ class MainMenuState extends FlxTransitionableState {
         optionsButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
         buttonGroup.add(optionsButton);
 
-        #if desktop // Exiting only works on desktop!
         // Setup and add the exit button
         exitButton = new FlxText(80, (FlxG.height / 2) + 180, 'Quit Game');
         exitButton.size = 45;
         exitButton.updateHitbox();
         exitButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
         buttonGroup.add(exitButton);
-        #end
 
         // Setup and add the flash that appears when the main menu is shown
         flashbang = new FlxSprite(0, 0);
@@ -149,7 +147,7 @@ class MainMenuState extends FlxTransitionableState {
 
         // If the player hasn't seen the intro yet, they can skip it by pressing any key
         if (!CacheUtil.alreadySawIntro) {
-            if (FlxG.keys.justPressed.ANY && !Controls.binds.FULLSCREEN_JUST_PRESSED) {
+            if (FlxG.keys.justPressed.ANY && !(Controls.binds.FULLSCREEN_JUST_PRESSED || Controls.justPressedAnyVolumeKeys())) {
                 _setupMainMenu();
             }
         } else {
@@ -179,6 +177,8 @@ class MainMenuState extends FlxTransitionableState {
                         if (FlxG.mouse.justReleased) {
                             // Make sure to tell the game that a button was clicked!
                             buttonWasClicked = true;
+                            // Play a sound lol
+                            FlxG.sound.play(PathUtil.ofSound('vine-boom'));
                             // Loop through each button and make 
                             // them fade out (unless it's the button that was
                             // clicked on, then make it the center of the screen)
@@ -201,26 +201,29 @@ class MainMenuState extends FlxTransitionableState {
 
                             // Do an action when a button was clicked
                             // TODO: Try to make this more efficient?
-                            new FlxTimer().start(1.5, (timer:FlxTimer) -> {
+                            var canDisplayEasterEgg:Bool = FlxG.random.int(1, 5) == 3;
+                            new FlxTimer().start((button != exitButton) ? 1 : (!canDisplayEasterEgg) ? 1 : 2, (timer:FlxTimer) -> {
                                 if (button == campaignButton) {  // Campaign button action
                                     // Switch to the campaign menu state
-                                    GeneralUtil.fadeIntoState(new CampaignMenuState(), Constants.TRANSITION_DURATION);
+                                    GeneralUtil.fadeIntoState(new CampaignMenuState(), Constants.TRANSITION_DURATION, false);
                                 } else if (button == optionsButton) {
                                     // Switch to the options state
-                                    GeneralUtil.fadeIntoState(new OptionsMenuState(), Constants.TRANSITION_DURATION);
+                                    GeneralUtil.fadeIntoState(new OptionsMenuState(), Constants.TRANSITION_DURATION, false);
                                 } else if (button == exitButton) {  // Exit button action
-                                    #if desktop
-                                    if (FlxG.random.int(0, 50) == 0) {  // An easter egg shhhhhh
+                                    if (canDisplayEasterEgg) {  // An easter egg shhhhhh
                                         FlxG.sound.music.stop();
                                         goofyAhhTroll.loadGraphic(PathUtil.ofImage('my_pc_now_weighs_42_tons'));
+                                        goofyAhhTroll.scale.set(2.3, 2.3);
                                         FlxG.sound.play(PathUtil.ofSound('caseoh-nooooo'));
+                                        // Add a timer so the user can get the caseoh jumpscare lol
                                         new FlxTimer().start(0.6, (timer:FlxTimer) -> {
-                                            Sys.exit(0);
+                                            GeneralUtil.closeGame();
                                         });
                                     } else {
-                                        Sys.exit(0);
+                                        // Just close the game if the user didn't get
+                                        // the caseoh easter egg *sob*
+                                        GeneralUtil.closeGame();
                                     }
-                                    #end
                                 }
                             });
                         }  
@@ -236,6 +239,12 @@ class MainMenuState extends FlxTransitionableState {
                     }
                 }
             }
+        }
+
+        // If the user presses the back button, then
+        // just simply close the game :p
+        if (Controls.binds.BACK_JUST_PRESSED) {
+            GeneralUtil.closeGame();
         }
     }
 
@@ -319,7 +328,6 @@ class MainMenuState extends FlxTransitionableState {
         pressAnyKeyText.visible = false;
 
         FlxG.camera.bgColor = FlxColor.WHITE;
-        CacheUtil.alreadySawIntro = true;
 
         introStageTimer1.cancel();
         introStageTimer2.cancel();
@@ -330,6 +338,8 @@ class MainMenuState extends FlxTransitionableState {
         FlxTween.tween(flashbang, { alpha: 0 }, 3, {
             type: FlxTweenType.ONESHOT
         });
+
+        CacheUtil.alreadySawIntro = true;
 
         new FlxTimer().start(
             1.75,

@@ -50,6 +50,14 @@ class Controls {
     private inline function get_M_DOWN_PRESSED():Bool return pressed('m_down');
     private inline function get_M_RIGHT_PRESSED():Bool return pressed('m_right');
 
+    // Volume (just pressed)
+    public var V_UP_JUST_PRESSED(get, never):Bool;
+    public var V_DOWN_JUST_PRESSED(get, never):Bool;
+    public var V_MUTE_JUST_PRESSED(get, never):Bool;
+    private inline function get_V_UP_JUST_PRESSED():Bool return justPressed('v_up');
+    private inline function get_V_DOWN_JUST_PRESSED():Bool return justPressed('v_down');
+    private inline function get_V_MUTE_JUST_PRESSED():Bool return justPressed('v_mute');
+
     // Other (just pressed)
     public var BACK_JUST_PRESSED(get, never):Bool;
     public var FULLSCREEN_JUST_PRESSED(get, never):Bool;
@@ -86,5 +94,12 @@ class Controls {
      */
     public static inline function justReleased(bind:String):Bool {
         return FlxG.keys.anyJustReleased([ClientPrefs.get_controlsKeyboard().get(bind)]);
+    }
+
+    /**
+     * Check if the user just pressed ***ANY*** volume keys.
+     */
+    public static inline function justPressedAnyVolumeKeys():Bool {
+        return justPressed('v_up') || justPressed('v_down') || justPressed('v_mute'); 
     }
 }

@@ -16,6 +16,7 @@ class SaveUtil {
     public static function saveAll() {
         saveUserOptions();
         saveUserControls();
+        saveUserProgress();
     }
 
     /**
@@ -29,6 +30,9 @@ class SaveUtil {
         // Assign the data
         optionsSave.data.options = ClientPrefs.get_options();
 
+        // Save the last volume used
+        optionsSave.data.lastVolume = (CacheUtil.isFocused) ? FlxG.sound.volume : CacheUtil.lastVolumeUsed;
+
         // For checking if the data saved
         var didOptionsSave:Bool = optionsSave.flush();
 
@@ -36,10 +40,11 @@ class SaveUtil {
         optionsSave.close();
 
         // Log if all options were saved
-        if (didOptionsSave)
+        if (didOptionsSave) {
             FlxG.log.add('All options have been saved!');
-        else
+        } else {
             FlxG.log.warn('All options failed to save.');
+        }
     }
 
     /**
@@ -64,5 +69,45 @@ class SaveUtil {
             FlxG.log.add('All controls have been saved!');
         else
             FlxG.log.warn('All controls failed to save.');
+    }
+
+    /**
+     * Saves all of the user's progress.
+     */
+    public static function saveUserProgress():Void {
+        // Create and bind the save
+        var progressSave:FlxSave = new FlxSave();
+        progressSave.bind(Constants.PROGRESS_SAVE_BIND_ID, PathUtil.getSavePath());
+
+        // Assign the data
+        progressSave.data.unlockedYears = CacheUtil.unlockedYears;
+
+        // For checking if the data saved
+        var didProgressSave:Bool = progressSave.flush();
+
+        // Close the bind
+        progressSave.close();
+
+        // Log if all progress was saved
+        if (didProgressSave)
+            FlxG.log.add('All progress has been saved!');
+        else
+            FlxG.log.warn('All progress failed to save.');
+    }
+
+    /**
+     * Loads all of the user's progress.
+     */
+    public static function loadUserProgress():Void {
+        // Create and bind the save
+        var progressSave:FlxSave = new FlxSave();
+        progressSave.bind(Constants.PROGRESS_SAVE_BIND_ID, PathUtil.getSavePath());
+
+        // Assign the data
+        if (progressSave.data.unlockedYears != null) 
+            CacheUtil.unlockedYears = progressSave.data.unlockedYears;
+
+        // Close the bind
+        progressSave.close();
     }
 }

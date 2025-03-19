@@ -24,7 +24,7 @@ class PlayState extends FlxTransitionableState {
 		super.update(elapsed);
 
 		if (Controls.binds.BACK_JUST_PRESSED) {
-            GeneralUtil.fadeIntoState(new CampaignMenuState(), Constants.TRANSITION_DURATION);
+            GeneralUtil.fadeIntoState(new CampaignMenuState(), Constants.TRANSITION_DURATION, false);
         }
 	}
 }

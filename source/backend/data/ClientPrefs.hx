@@ -1,5 +1,6 @@
 package backend.data;
 
+import backend.util.PathUtil;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import flixel.input.keyboard.FlxKey;
@@ -80,7 +81,7 @@ class ClientPrefs {
      * @param setting The setting to be set.
 	 * @param value   The value to set it to.
      */
-	public static function setClientPrefrence(setting:String, value:Dynamic):Void {
+	public static function setClientPreference(setting:String, value:Dynamic):Void {
         try {
 			Reflect.setField(_options, setting, value);
         } catch (e:Exception) {
@@ -111,8 +112,8 @@ class ClientPrefs {
         var controlsData:FlxSave = new FlxSave();
 
         // Connect to the saves
-        optionsData.bind(Constants.OPTIONS_SAVE_BIND_ID);
-        controlsData.bind(Constants.CONTROLS_SAVE_BIND_ID);
+        optionsData.bind(Constants.OPTIONS_SAVE_BIND_ID, PathUtil.getSavePath());
+        controlsData.bind(Constants.CONTROLS_SAVE_BIND_ID, PathUtil.getSavePath());
 
         // Load options
         if (optionsData.data.options != null)
@@ -125,6 +126,19 @@ class ClientPrefs {
             _controlsKeyboard = controlsData.data.keyboard;
         else
             _controlsKeyboard = Constants.DEFAULT_CONTROLS_KEYBOARD;
+
+        // Set the volume to the last used volume the user had
+        if (optionsData.data.lastVolume != null)
+            FlxG.sound.volume = optionsData.data.lastVolume;
+        else
+            FlxG.sound.volume = 1.0;
+
+        // Set the volume keys
+        FlxG.sound.volumeUpKeys = [controlsKeyboard.get('v_up')];
+        FlxG.sound.volumeDownKeys = [controlsKeyboard.get('v_down')];
+        FlxG.sound.muteKeys = [controlsKeyboard.get('v_mute')];
+
+        FlxG.log.add("Loaded all client preferences and controls successfully.");
 
         // Respectfully close the saves to
         // prevent data leaks

@@ -1,5 +1,6 @@
 package backend.data;
 
+import flixel.util.FlxColor;
 import flixel.input.keyboard.FlxKey;
 
 /**
@@ -18,6 +19,11 @@ class Constants {
         'm_down'     => FlxKey.S,
         'm_right'    => FlxKey.D,
 
+        // Volume
+        'v_up'       => FlxKey.PLUS,
+        'v_down'     => FlxKey.MINUS,
+        'v_mute'     => FlxKey.F12,
+
         // Other
         'back'       => FlxKey.ESCAPE,
         'fullscreen' => FlxKey.F11
@@ -32,6 +38,11 @@ class Constants {
      * The name of the save file for the player's controls.
      */
     public static final CONTROLS_SAVE_BIND_ID:String = 'controls';
+
+    /**
+     * The name of the save file for the player's progress.
+     */
+    public static var PROGRESS_SAVE_BIND_ID:String = 'progress';
 
     /**
      * The splash texts that are displayed on the main menu.
@@ -61,11 +72,36 @@ class Constants {
         ['"*skibidi"', '-kori 3/1/2025'],
         ['"get your twink out of my house of god"', '-kira 2/24/2025'],
         ['"CUMpany"', '-dfam 2/21/2025'],
-        ['"YOUCH!! *says in a zesty tone*"', '-dfam 3/16/2025']
+        ['"YOUCH!! *says in a zesty tone*"', '-dfam 3/16/2025'],
+        ['erm', 'what the sigma'],
+        ['skibidi', 'rizzler']
     ];
 
     /**
      * How long it takes for the fade effect to last when switching states.
      */
     public static final TRANSITION_DURATION:Float = 0.4;
+
+    /**
+     * A list of campaign years and their associated data.
+     * Each entry in the array represents a campaign year and contains the following:
+     * 
+     * - The name of the campaign year as a `String`.
+     * - An optional value (can be `null`) representing additional data for the campaign year.
+     * - Another optional value (can be `null`) representing additional data for the campaign year.
+     * 
+     * Example:
+     * ```haxe
+     * [
+     *     ['Tutorial', null, null],  // A tutorial campaign with no additional data.
+     *     ['2009', null, null],  // Campaign year 2009 with no additional data.
+     *     ['2022', FlxColor.BLACK, FlxColor.WHITE]  // Campaign year 2022 with specific colors.
+     * ]
+     * ```
+     */
+    public static final CAMPAIGN_YEARS:Array<Array<Dynamic>> = [
+        ['Tutorial', null, null],
+        ['2009', null, null],
+        ['2022', FlxColor.BLACK, FlxColor.WHITE]
+    ];
 }
