@@ -18,6 +18,26 @@ class PathUtil {
     }
 
     /**
+     * Get the path of a JSON asset.
+     * 
+     * @param name The name of the JSON file (this does not include the file extension).
+     * @return     The path of the JSON file.
+     */
+    public static inline function ofJson(name:String):String {
+        return 'assets/shared/data/json/' + '$name.json';
+    }
+
+    /**
+     * Get the path of an XML asset.
+     * 
+     * @param name The name of the XML file (this does not include the file extension).
+     * @return     The path of the XML file.
+     */
+    public static inline function ofXml(name:String):String {
+        return 'assets/shared/data/xml/' + '$name.xml';
+    }
+
+    /**
      * Get the path of a font asset.
      * 
      * @param name The name of the font (this does not include the file extension).

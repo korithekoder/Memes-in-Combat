@@ -19,13 +19,20 @@ class Constants {
         'm_down'     => FlxKey.S,
         'm_right'    => FlxKey.D,
 
+        // UI
+        'ui_left'    => FlxKey.LEFT,
+        'ui_down'    => FlxKey.DOWN,
+        'ui_up'      => FlxKey.UP,
+        'ui_right'   => FlxKey.RIGHT,
+        'ui_select'  => FlxKey.ENTER,
+        'ui_back'    => FlxKey.ESCAPE,
+
         // Volume
         'v_up'       => FlxKey.PLUS,
         'v_down'     => FlxKey.MINUS,
         'v_mute'     => FlxKey.F12,
 
         // Other
-        'back'       => FlxKey.ESCAPE,
         'fullscreen' => FlxKey.F11
     ];
     
@@ -87,8 +94,8 @@ class Constants {
      * Each entry in the array represents a campaign year and contains the following:
      * 
      * - The name of the campaign year as a `String`.
-     * - An optional value (can be `null`) representing additional data for the campaign year.
-     * - Another optional value (can be `null`) representing additional data for the campaign year.
+     * - An optional value (can be `null`) representing the base text color for the campaign year.
+     * - Another optional value (can be `null`) representing the outline text color for the campaign year.
      * 
      * Example:
      * ```haxe
@@ -102,6 +109,6 @@ class Constants {
     public static final CAMPAIGN_YEARS:Array<Array<Dynamic>> = [
         ['Tutorial', null, null],
         ['2009', null, null],
-        ['2022', FlxColor.BLACK, FlxColor.WHITE]
+        ['2022', null, null]
     ];
 }

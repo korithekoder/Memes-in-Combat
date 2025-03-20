@@ -2,22 +2,22 @@ package states.menus;
 
 import backend.Controls;
 import backend.data.ClientPrefs;
-import backend.util.GeneralUtil;
-import flixel.addons.transition.FlxTransitionableState;
-#if DISCORD_ALLOWED
-import backend.api.DiscordClient;
-#end
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.FlxSprite;
 import backend.data.Constants;
-import flixel.util.FlxTimer;
 import backend.util.CacheUtil;
+import backend.util.GeneralUtil;
 import backend.util.PathUtil;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import flixel.FlxG;
-import flixel.text.FlxText;
+import flixel.util.FlxTimer;
+#if DISCORD_ALLOWED
+import backend.api.DiscordClient;
+#end
 
 /**
  * State that displays the main menu.
@@ -243,7 +243,7 @@ class MainMenuState extends FlxTransitionableState {
 
         // If the user presses the back button, then
         // just simply close the game :p
-        if (Controls.binds.BACK_JUST_PRESSED) {
+		if (Controls.binds.UI_BACK_JUST_PRESSED) {
             GeneralUtil.closeGame();
         }
     }

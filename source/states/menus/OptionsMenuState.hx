@@ -1,16 +1,17 @@
 package states.menus;
 
+import backend.util.SaveUtil;
 #if DISCORD_ALLOWED
 import backend.api.DiscordClient;
 #end
-import flixel.util.FlxColor;
-import flixel.FlxG;
-import flixel.text.FlxText;
-import backend.data.Constants;
-import backend.util.GeneralUtil;
 import backend.Controls;
 import backend.data.ClientPrefs;
+import backend.data.Constants;
+import backend.util.GeneralUtil;
+import flixel.FlxG;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
 
 /**
  * State that displays the options menu/
@@ -41,7 +42,7 @@ class OptionsMenuState extends FlxTransitionableState {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
-        if (Controls.binds.BACK_JUST_PRESSED) {
+		if (Controls.binds.UI_BACK_JUST_PRESSED) {
             GeneralUtil.fadeIntoState(new MainMenuState(), Constants.TRANSITION_DURATION);
         }
     }

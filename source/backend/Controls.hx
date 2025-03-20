@@ -50,6 +50,34 @@ class Controls {
     private inline function get_M_DOWN_PRESSED():Bool return pressed('m_down');
     private inline function get_M_RIGHT_PRESSED():Bool return pressed('m_right');
 
+    // UI (pressed)
+    public var UI_LEFT_PRESSED(get, never):Bool;
+    public var UI_DOWN_PRESSED(get, never):Bool;
+    public var UI_UP_PRESSED(get, never):Bool;
+    public var UI_RIGHT_PRESSED(get, never):Bool;
+    public var UI_SELECT_PRESSED(get, never):Bool;
+    public var UI_BACK_PRESSED(get, never):Bool;
+    private inline function get_UI_LEFT_PRESSED():Bool return pressed('ui_left');
+    private inline function get_UI_DOWN_PRESSED():Bool return pressed('ui_down');
+    private inline function get_UI_UP_PRESSED():Bool return pressed('ui_up');
+    private inline function get_UI_RIGHT_PRESSED():Bool return pressed('ui_right');
+    private inline function get_UI_SELECT_PRESSED():Bool return pressed('ui_select');
+    private inline function get_UI_BACK_PRESSED():Bool return pressed('ui_back');
+
+	// UI (just pressed)
+	public var UI_LEFT_JUST_PRESSED(get, never):Bool;
+	public var UI_DOWN_JUST_PRESSED(get, never):Bool;
+	public var UI_UP_JUST_PRESSED(get, never):Bool;
+	public var UI_RIGHT_JUST_PRESSED(get, never):Bool;
+	public var UI_SELECT_JUST_PRESSED(get, never):Bool;
+    public var UI_BACK_JUST_PRESSED(get, never):Bool;
+	private inline function get_UI_LEFT_JUST_PRESSED():Bool return justPressed('ui_left');
+	private inline function get_UI_DOWN_JUST_PRESSED():Bool return justPressed('ui_down');
+	private inline function get_UI_UP_JUST_PRESSED():Bool return justPressed('ui_up');
+	private inline function get_UI_RIGHT_JUST_PRESSED():Bool return justPressed('ui_right');
+	private inline function get_UI_SELECT_JUST_PRESSED():Bool return justPressed('ui_select');
+    private inline function get_UI_BACK_JUST_PRESSED():Bool return justPressed('ui_back');
+
     // Volume (just pressed)
     public var V_UP_JUST_PRESSED(get, never):Bool;
     public var V_DOWN_JUST_PRESSED(get, never):Bool;
@@ -59,9 +87,7 @@ class Controls {
     private inline function get_V_MUTE_JUST_PRESSED():Bool return justPressed('v_mute');
 
     // Other (just pressed)
-    public var BACK_JUST_PRESSED(get, never):Bool;
     public var FULLSCREEN_JUST_PRESSED(get, never):Bool;
-    private inline function get_BACK_JUST_PRESSED():Bool return justPressed('back');
     private inline function get_FULLSCREEN_JUST_PRESSED():Bool return justPressed('fullscreen');
 
     /**

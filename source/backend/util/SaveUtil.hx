@@ -110,4 +110,34 @@ class SaveUtil {
         // Close the bind
         progressSave.close();
     }
+
+    public static function deleteAll():Void {
+        // Create and bind the saves
+        var optionsSave:FlxSave = new FlxSave();
+        var controlsSave:FlxSave = new FlxSave();
+        var progressSave:FlxSave = new FlxSave();
+
+        // Connect to the saves
+        optionsSave.bind(Constants.OPTIONS_SAVE_BIND_ID, PathUtil.getSavePath());
+        controlsSave.bind(Constants.CONTROLS_SAVE_BIND_ID, PathUtil.getSavePath());
+        progressSave.bind(Constants.PROGRESS_SAVE_BIND_ID, PathUtil.getSavePath());
+
+        // Delete the data
+        optionsSave.erase();
+        controlsSave.erase();
+        progressSave.erase();
+
+        // Ensure the data is deleted
+        optionsSave.flush();
+        controlsSave.flush();
+        progressSave.flush();
+
+        // Close the binds
+        optionsSave.close();
+        controlsSave.close();
+        progressSave.close();
+
+        // Log that all data has been deleted
+        FlxG.log.add('All user data has been deleted.');
+    }
 }

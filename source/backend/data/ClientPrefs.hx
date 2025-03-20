@@ -75,6 +75,10 @@ class ClientPrefs {
 		return Constants.DEFAULT_CONTROLS_KEYBOARD;
     }
 
+    // -----------------------------
+    //            METHODS
+    // -----------------------------
+
     /**
      * Sets a user's option.
      * 
@@ -126,6 +130,14 @@ class ClientPrefs {
             _controlsKeyboard = controlsData.data.keyboard;
         else
             _controlsKeyboard = Constants.DEFAULT_CONTROLS_KEYBOARD;
+
+        // Check if the user has any new controls
+        // (this is for when new controls are added in an update!)
+        for (key in Constants.DEFAULT_CONTROLS_KEYBOARD.keys()) {
+            if (!_controlsKeyboard.exists(key)) {
+                _controlsKeyboard.set(key, Constants.DEFAULT_CONTROLS_KEYBOARD.get(key));
+            }
+        }
 
         // Set the volume to the last used volume the user had
         if (optionsData.data.lastVolume != null)

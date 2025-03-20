@@ -1,5 +1,6 @@
 package objects.display;
 
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import backend.util.PathUtil;
@@ -94,5 +95,22 @@ class CampaignYearDisplayObject extends FlxTypedGroup<FlxSprite> {
 
     public function get_yearColor():FlxColor {
         return _yearColor;
+    }
+
+    // -----------------------------
+    //            METHODS
+    // -----------------------------
+
+    /**
+     * Tweens all the objects in `this` group.
+     * 
+     * @param options  The options for the tween.
+     * @param duration How long the tween should last.
+     * @param types    The types of tweens and eases to use.
+     */
+    public function tween(options:Dynamic, duration:Float, types:Dynamic):Void {
+        for (obj in this.members) {                
+            FlxTween.tween(obj, options, duration, types);
+        }
     }
 }
