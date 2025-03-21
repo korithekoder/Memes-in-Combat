@@ -2,7 +2,8 @@ package backend.util;
 
 /**
  * Class that holds general, temporary data for pretty much anything.
- * Examples of general temporary data can be things such as the last volume used, for example.
+ * Examples of general temporary data can be things such as the last volume used, the
+ * years the player has unlocked, etc.
  */
 class CacheUtil {
     
@@ -30,4 +31,14 @@ class CacheUtil {
      * The years that the player has unlocked.
      */
     public static var unlockedYears:Array<String> = ['Tutorial'];
+
+    /**
+     * The currently selected year by the player.
+     */
+    public static var selectedYear:String;
+
+    /**
+     * Is the dialogue finished?
+     */
+    public static var isDialogueFinished:Bool = true;
 }

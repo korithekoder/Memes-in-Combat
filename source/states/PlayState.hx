@@ -1,5 +1,6 @@
 package states;
 
+import objects.ui.DialogueBox;
 import backend.Controls;
 import backend.data.Constants;
 import backend.util.CacheUtil;
@@ -13,11 +14,16 @@ import states.menus.CampaignMenuState;
  */
 class PlayState extends FlxTransitionableState {
 
+	var dialogueBox:DialogueBox;
+
 	override public function create() {
 		super.create();
 
 		FlxG.sound.music.stop();
 		CacheUtil.canPlayMenuMusic = true;
+
+		dialogueBox = new DialogueBox('Tutorial-Start', 'troll');
+		add(dialogueBox);
 	}
 
 	override public function update(elapsed:Float) {

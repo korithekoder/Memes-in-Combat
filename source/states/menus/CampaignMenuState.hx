@@ -1,21 +1,21 @@
 package states.menus;
 
-import backend.data.ClientPrefs;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.FlxSprite;
-import backend.util.PathUtil;
 import backend.Controls;
+import backend.data.ClientPrefs;
 import backend.data.Constants;
 import backend.util.CacheUtil;
 import backend.util.GeneralUtil;
+import backend.util.PathUtil;
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.group.FlxGroup.FlxTypedGroup; 
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import objects.display.CampaignYearDisplayObject;
+import objects.display.CampaignYearIcon;
 #if DISCORD_ALLOWED
 import backend.api.DiscordClient;
 #end
@@ -25,7 +25,7 @@ import backend.api.DiscordClient;
  */
 class CampaignMenuState extends FlxTransitionableState {
     
-    var campaignYears:FlxTypedGroup<CampaignYearDisplayObject>;
+	var campaignYears:FlxTypedGroup<CampaignYearIcon>;
 
     var accessDeniedVolume:Float = 0.2;
     var accessDeniedAttempts:Int = 0;
@@ -43,7 +43,7 @@ class CampaignMenuState extends FlxTransitionableState {
         GeneralUtil.playMenuMusic();
 
 		// Create the campaign years
-        campaignYears = new FlxTypedGroup<CampaignYearDisplayObject>();
+		campaignYears = new FlxTypedGroup<CampaignYearIcon>();
         add(campaignYears);
 
 		// Generate the campaign years and their respective display objects
@@ -56,7 +56,7 @@ class CampaignMenuState extends FlxTransitionableState {
 			if (!unlocked) baseColor = FlxColor.BLACK;
 			if (!unlocked) baseOutlineColor = FlxColor.WHITE;
 
-            campaignYears.add(new CampaignYearDisplayObject(FlxG.width + 40, newY, y[0], baseColor, baseOutlineColor, unlocked));
+			campaignYears.add(new CampaignYearIcon(FlxG.width + 40, newY, y[0], baseColor, baseOutlineColor, unlocked));
             newY += 220;
         }
 
@@ -89,19 +89,22 @@ class CampaignMenuState extends FlxTransitionableState {
 
         if (!isMichaelJordanVisible) {
             // Check if the user wants to go back to the main menu or play the selected year
-            if (Controls.binds.UI_BACK_JUST_PRESSED ) {  // Go back to the main menu
+			if (Controls.binds.UI_BACK_JUST_PRESSED) { // Go back to the main menu
                 GeneralUtil.fadeIntoState(new MainMenuState(), Constants.TRANSITION_DURATION);
             } else if (Controls.binds.UI_SELECT_JUST_PRESSED) {  // Play the selected year
-                var year:CampaignYearDisplayObject = campaignYears.members[currentYear];
+				var year:CampaignYearIcon = campaignYears.members[currentYear];
 
                 // Check if the year is unlocked
                 if (CacheUtil.unlockedYears.contains(year.get_year())) {
                     // If the year is unlocked, tween the other years and go to the play state
                     for (y in campaignYears.members) {
                         if (y != year) {
-                            y.tween({ alpha: 0.3 }, 0.35, { type: FlxTweenType.PERSIST, ease: FlxEase.quadOut });
+                            GeneralUtil.tweenSpriteGroup(y, { alpha: 0.3 }, 0.35, { type: FlxTweenType.PERSIST, ease: FlxEase.quadOut });
                         }
                     }
+
+					// Assign the selected year for the loading state
+					CacheUtil.selectedYear = year.get_year();
 
                     // Center the selected year
                     for (obj in year) {
@@ -110,7 +113,7 @@ class CampaignMenuState extends FlxTransitionableState {
 
                     // Fade into the play state
                     new FlxTimer().start(1.5, (_) -> {
-                        GeneralUtil.fadeIntoState(new PlayState(), Constants.TRANSITION_DURATION, false);
+						GeneralUtil.fadeIntoState(new LoadingState(), Constants.TRANSITION_DURATION, false);
                     });
                 } else {
                     // *insert access denied sfx here*
@@ -139,9 +142,9 @@ class CampaignMenuState extends FlxTransitionableState {
             }
         }
 
-        // Check if the user has tried to a locked year 10 times
+		// Check if the user has tried to enter a locked year too many times
         // If they do, play the goofy ass Michael Jordan meme lmao
-        if (accessDeniedAttempts >= 10) {
+		if (accessDeniedAttempts >= 20) {
 
             // Add the frames to the Michael Jordan sprite
             var frames:Array<Int> = [];
@@ -149,11 +152,14 @@ class CampaignMenuState extends FlxTransitionableState {
                 frames.push(frm);
             }
 
+			// Get the paths to the image and xml file
+			var paths:Array<String> = PathUtil.ofSpriteSheet('lmfao/stop-it-get-some-help');
+
             // Stop the music and play the Michael Jordan sprite
             FlxTween.cancelTweensOf(FlxG.sound.music);
             FlxG.sound.music.volume = 0;
             FlxG.sound.play(PathUtil.ofSound('stop-it-get-some-help'));
-            michaelJordan.frames = FlxAtlasFrames.fromSparrow(PathUtil.ofImage('stop-it-get-some-help'), PathUtil.ofXml('stop-it-get-some-help'));
+			michaelJordan.frames = FlxAtlasFrames.fromSparrow(paths[0], paths[1]);
             michaelJordan.animation.addByIndices('stop-it-get-some-help', 'stop-it-get-some-help_', frames, '', 11, false);
             michaelJordan.animation.play('stop-it-get-some-help');
             michaelJordan.x = (FlxG.width / 2) - (michaelJordan.width / 2);

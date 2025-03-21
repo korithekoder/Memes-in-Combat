@@ -38,6 +38,8 @@
 	<source path="source" />
 	<assets path="assets" />
 
+	<assets path="assets/shared/data" include="*.json" />
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<!-- Flixel -->

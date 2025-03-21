@@ -146,6 +146,7 @@ class MainMenuState extends FlxTransitionableState {
         super.update(elapsed);
 
         // If the player hasn't seen the intro yet, they can skip it by pressing any key
+        // (excluding the fullscreen and volume binds)
         if (!CacheUtil.alreadySawIntro) {
             if (FlxG.keys.justPressed.ANY && !(Controls.binds.FULLSCREEN_JUST_PRESSED || Controls.justPressedAnyVolumeKeys())) {
                 _setupMainMenu();

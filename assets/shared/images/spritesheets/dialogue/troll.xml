@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+    <TextureAtlas imagePath="troll.png">
+    <SubTexture name="troll_normal_0" x="0" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="troll_confident_0" x="498" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="troll_confident_1" x="0" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="troll_confident_2" x="498" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="troll_upset_0" x="996" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="troll_upset_1" x="996" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_6" x="0" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_7" x="498" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_8" x="996" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_9" x="1494" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_10" x="1494" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_11" x="1494" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_12" x="0" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_13" x="498" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_14" x="996" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_15" x="1494" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_16" x="1992" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_17" x="1992" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_18" x="1992" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_19" x="1992" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_20" x="0" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_21" x="498" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_22" x="996" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_23" x="1494" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_24" x="1992" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="stop-it-get-some-help_25" x="2490" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+</TextureAtlas>

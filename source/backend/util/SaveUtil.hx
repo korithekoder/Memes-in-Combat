@@ -111,6 +111,9 @@ class SaveUtil {
         progressSave.close();
     }
 
+    /**
+     * Deletes ***ALL*** of the user save data.
+     */
     public static function deleteAll():Void {
         // Create and bind the saves
         var optionsSave:FlxSave = new FlxSave();

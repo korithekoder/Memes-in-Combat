@@ -1,5 +1,8 @@
 package backend.util;
 
+import flixel.tweens.FlxTween;
+import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 #if html5
 import js.Browser;
 #end
@@ -49,5 +52,21 @@ class GeneralUtil {
         #elseif desktop
         Sys.exit(0);
         #end
+    }
+
+    /**
+     * Tweens an `FlxSpriteGroup`'s members with ease.
+     * 
+     * @param group    The group to tween.
+     * @param options  Dynamic object with the attributes to tween.
+     * @param duration How long the tween should last for.
+     * @param types    The types and eases for the group to tween with.
+     */
+    public static function tweenSpriteGroup(group:FlxTypedGroup<FlxSprite>, options:Dynamic, duration:Float, types:Dynamic):Void {
+        for (obj in group.members) {  
+            if (obj != null) {            
+                FlxTween.tween(obj, options, duration, types);
+            }
+        }
     }
 }

@@ -1,0 +1,25 @@
+{
+    "level": {
+        "size": {
+            "width": 3,
+            "height": 3
+        }
+    },
+    "metadata": {
+        "map": {
+            "spritesheet": "example"
+        }
+    },
+    "map": [
+        [
+            {
+                "id": "tile-id",
+                "rotation": 0
+            },
+            {
+                "id": "tile-id-2",
+                "rotation": 1
+            }
+        ]
+    ]
+}

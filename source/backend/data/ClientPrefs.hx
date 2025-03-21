@@ -20,6 +20,11 @@ import haxe.Exception;
      * Should the game display in the client's Discord "Activity" box?
      */
     public var discordRPC:Bool = true;
+
+    /**
+     * Should the dialogue boxes use animations when writing text?
+     */
+     public var dialogueAnimations:Bool = true;
 }
 
 /**
@@ -124,6 +129,12 @@ class ClientPrefs {
             _options = optionsData.data.options;
         else
             _options = _defaultOptions;
+
+        for (optn in Reflect.fields(_defaultOptions)) {
+            if (!Reflect.hasField(_options, optn)) {
+                Reflect.setField(_options, optn, Reflect.field(_defaultOptions, optn));
+            }
+        }
 
         // Load controls
         if (controlsData.data.keyboard != null)

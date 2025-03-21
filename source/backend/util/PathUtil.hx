@@ -24,17 +24,7 @@ class PathUtil {
      * @return     The path of the JSON file.
      */
     public static inline function ofJson(name:String):String {
-        return 'assets/shared/data/json/' + '$name.json';
-    }
-
-    /**
-     * Get the path of an XML asset.
-     * 
-     * @param name The name of the XML file (this does not include the file extension).
-     * @return     The path of the XML file.
-     */
-    public static inline function ofXml(name:String):String {
-        return 'assets/shared/data/xml/' + '$name.xml';
+        return 'assets/shared/data/' + '$name.json';
     }
 
     /**
@@ -65,6 +55,22 @@ class PathUtil {
      */
     public static inline function ofMusic(name:String):String {
         return 'assets/shared/music/' + '$name' + #if html5 '.mp3' #else '.ogg' #end;
+    }
+
+    /**
+     * Get the paths of a sprite sheets' image and `.xml` file.
+     * Note that this will return an array of both pathways, with the
+     * first element being to the image and the second one being its
+     * `.xml` file.
+     * 
+     * ***WARNING***: The sprite sheets' image and `.xml` file *must*
+     * be in the same location or otherwise this function will fail.
+     * 
+     * @param name The name of the sprite sheet.
+     * @return     An array of the paths to the image.
+     */
+    public static inline function ofSpriteSheet(name:String):Array<String> {
+        return ['assets/shared/images/spritesheets/$name.png', 'assets/shared/images/spritesheets/$name.xml'];
     }
 
     /**

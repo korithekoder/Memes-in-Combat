@@ -1,0 +1,57 @@
+[
+    {
+        "responsefrom": [],
+        "text": "Yo wsg lil bro.",
+        "speaker": "troll",
+        "emotion": "normal",
+        "responses": [
+            "yo wsp",
+            "stfu weirdo"
+        ]
+    },
+    {
+        "responsefrom": [
+            "yo wsp"
+        ],
+        "text": "Soooooo...",
+        "speaker": "troll",
+        "emotion": "normal",
+        "responses": [
+            "..?",
+            "why arent you off my screen yet you freak"
+        ]
+    },
+    {
+        "responsefrom": [
+            "..?"
+        ],
+        "text": "you wanna be the most iconic user in internet history, right?",
+        "speaker": "troll",
+        "emotion": "normal",
+        "responses": [
+            "mhm",
+            "stop yapping"
+        ]
+    },
+    {
+        "responsefrom": [
+            "mhm"
+        ],
+        "text": "well then, let's get started!",
+        "speaker": "troll",
+        "emotion": "normal",
+        "responses": []
+    },
+    {
+        "responsefrom": [
+            "stfu weirdo",
+            "bro get tf out of my monitor",
+            "why arent you off my screen yet you freak",
+            "stop yapping"
+        ],
+        "text": "Wow, okay, I see how it is...",
+        "speaker": "troll",
+        "emotion": "normal",
+        "responses": []
+    }
+]

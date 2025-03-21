@@ -1,0 +1,19 @@
+{
+    "emotions": [
+        {
+            "id": "normal",
+            "frames": 1,
+            "voice": "troll"
+        },
+        {
+            "id": "confident",
+            "frames": 3,
+            "voice": "troll"
+        },
+        {
+            "id": "upset",
+            "frames": 2,
+            "voice": "troll"
+        }
+    ]
+}
