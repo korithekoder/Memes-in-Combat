@@ -88,7 +88,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
      *                       (animations that can play), their name, etc.
      */
     public function new(speechDataName:String, speakerId:String) {
-        super();
+        super(6);
 
         CacheUtil.isDialogueFinished = false;
 
@@ -152,18 +152,25 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
         this.add(this._response2);
         this.add(this._hoverArrow);
 
+        // Find the first speech bubble that has nothing contained
+        // in the "responsefrom" array
         for (bubble in this._speechData) {
             if (bubble.responsefrom.length == 0) {
                 this._foundStartingBubble = true;
                 this._currentBubbleData = bubble;
                 this.setResponses(bubble);
+                this._response1.updateHoverBounds();
+                this._response2.updateHoverBounds();
                 this._currentSpeakerEmotion = this._currentBubbleData.emotion;
                 break;
             }
         }
 
-        this.changeHoverArrowLocation(this._hoveredResponse);
+        // Set the arrow to be on the first response
+        this.changeHoverArrowLocation(this._hoveredResponse, false);
 
+        // Add each animation, with the data from the speaker's character .json
+        // file, with the .xml file from the images/spritesheets folder
         for (emtn in this._speakerEmotions) {
             var frames:Array<Int> = [];
             for (i in 0...emtn.frames) frames.push(i);
@@ -194,12 +201,15 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
+        // Check if the left/right bind was pressed
+        // to switch responses
         if (Controls.binds.UI_LEFT_JUST_PRESSED) {
             this._switchHoveredResponse(1);
         } else if (Controls.binds.UI_RIGHT_JUST_PRESSED) {
             this._switchHoveredResponse(2);
         }
 
+        // If the user presses the accept bind, then load the next response
         if (Controls.binds.UI_SELECT_JUST_PRESSED && this._canEnterPrompt) {
             _changeDialogue();
             if (this._currentBubbleData == this._oldBubbleData) {
@@ -208,6 +218,12 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
         }
     }
 
+    /**
+     * Changes what response the funni little arrow is hovering over.
+     * 
+     * @param location       Which response the arrow should hover over.
+     * @param playHoverSound Should the arrow play a sound when it changes options?
+     */
     public function changeHoverArrowLocation(location:Int, playHoverSound:Bool = true):Void {
         if (playHoverSound && this._response2.text != '') {
             FlxG.sound.play(PathUtil.ofSound('blip'));
@@ -226,21 +242,34 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
         }
     }
 
+    /**
+     * Sets a response with new data. This is used usually when a new bubble is being generated.
+     * 
+     * @param r    The response to change.
+     * @param text The text to set it too.
+     */
     public function setResponse(r:Int, text:String):Void {
         switch (r) {
             case (1):
                 this._response1.text = text;
                 this._response1.updateHitbox();
+                this._response1.updateHoverBounds();
                 this._response1.x = (this._dialogueBoxBase.x + 30);
                 this._response1.y = (this._dialogueBoxBase.y + this._dialogueBoxBase.height) - this._response1.height - 30;
             case (2):
                 this._response2.text = text;
                 this._response2.updateHitbox();
+                this._response2.updateHoverBounds();
                 this._response2.x = (this._response1.x + this._response1.width) + 20;
                 this._response2.y = (this._dialogueBoxBase.y + this._dialogueBoxBase.height) - this._response2.height - 30;       
         }
     }
 
+    /**
+     * Change both responses at the same time, using the whole speech bubble data to use.
+     * 
+     * @param bubbleData The speech bubble data to obtain the responses from. 
+     */
     public function setResponses(bubbleData:Dynamic):Void {
         var isR1Null:Bool = (bubbleData.responses[0] == null);
         var isR2Null:Bool = (bubbleData.responses[1] == null);
@@ -284,8 +313,8 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
     }
 
     private function _changeDialogue():Void {
-        this._response1.resetHovered();
-        this._response2.resetHovered();
+        this._response1.isHovered = false;
+        this._response2.isHovered = false;
 
         this._oldBubbleData = this._currentBubbleData;
 

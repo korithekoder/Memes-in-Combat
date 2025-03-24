@@ -1,5 +1,6 @@
 package states.menus;
 
+import objects.ui.ClickableText;
 import backend.Controls;
 import backend.data.ClientPrefs;
 import backend.data.Constants;
@@ -37,15 +38,13 @@ class MainMenuState extends FlxTransitionableState {
 
     var goofyAhhTroll:FlxSprite;
 
-    var buttonGroup:FlxTypedGroup<FlxText>;
-
-    var campaignButton:FlxText;
-    var optionsButton:FlxText;
-    var exitButton:FlxText;
-
-    var buttonTween:FlxTween;
-
-    var lastHoveredButton:FlxText;
+    var buttons:Array<String> = [
+        'Campaign',
+        'Options',
+        'Quit Game'
+    ];
+    var buttonClickFunctions:Map<String, Void -> Void>;
+    var buttonGroup:FlxTypedGroup<ClickableText>;
     var buttonWasClicked:Bool = false;
 
     override public function create() {
@@ -85,29 +84,81 @@ class MainMenuState extends FlxTransitionableState {
         add(goofyAhhTroll);
 
         // Setup the button group
-        buttonGroup = new FlxTypedGroup<FlxText>();
+        buttonGroup = new FlxTypedGroup<ClickableText>();
         buttonGroup.visible = false;
         add(buttonGroup);
 
-        // Setup and add the campaign button
-        campaignButton = new FlxText(80, (FlxG.height / 2) + 20, 'Campaign');
-        campaignButton.size = 45;
-        campaignButton.updateHitbox();
-        campaignButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
-        buttonGroup.add(campaignButton);
+        // Assign all of the functions that get ran when
+        // the said button is clicked
+        buttonClickFunctions = [
+            'Campaign' => () -> {
+                _centerButton(buttonGroup.members[0]);
+                new FlxTimer().start(1, (_) -> {
+                    GeneralUtil.fadeIntoState(new CampaignMenuState(), Constants.TRANSITION_DURATION, false); 
+                });
+            },
+            'Options' => () -> { 
+                _centerButton(buttonGroup.members[1]);
+                new FlxTimer().start(1, (_) -> {
+                    GeneralUtil.fadeIntoState(new OptionsMenuState(), Constants.TRANSITION_DURATION, false); 
+                });
+            },
+            'Quit Game' => () -> {
+                _centerButton(buttonGroup.members[2]);
+                new FlxTimer().start(1, (_) -> {
+                    var canDisplayEasterEgg = FlxG.random.int(1, 5) == 3;
+                    if (canDisplayEasterEgg) {  // An easter egg shhhhhh
+                        FlxG.sound.music.stop();
+                        goofyAhhTroll.loadGraphic(PathUtil.ofImage('my_pc_now_weighs_42_tons'));
+                        goofyAhhTroll.scale.set(2.3, 2.3);
+                        FlxG.sound.play(PathUtil.ofSound('caseoh-nooooo'));
+                        // Add a timer so the user can get the caseoh jumpscare lol
+                        new FlxTimer().start(0.6, (timer:FlxTimer) -> {
+                            GeneralUtil.closeGame();
+                        });
+                    } else {
+                        // Just close the game if the user didn't get
+                        // the caseoh easter egg *sob*
+                        GeneralUtil.closeGame();
+                    }
+                });    
+            }
+        ];
 
-        optionsButton = new FlxText(80, (FlxG.height / 2) + 100, 'Options');
-        optionsButton.size = 45;
-        optionsButton.updateHitbox();
-        optionsButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
-        buttonGroup.add(optionsButton);
-
-        // Setup and add the exit button
-        exitButton = new FlxText(80, (FlxG.height / 2) + 180, 'Quit Game');
-        exitButton.size = 45;
-        exitButton.updateHitbox();
-        exitButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
-        buttonGroup.add(exitButton);
+        // Setup the buttons for the selection screen
+        var newY:Float = (FlxG.height / 2) + 20;
+        for (btn in buttons) {
+            var coolSwaggerButton = new ClickableText(80, newY, btn);
+            coolSwaggerButton.size = 45;
+            coolSwaggerButton.updateHitbox();
+            coolSwaggerButton.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 3);
+            coolSwaggerButton.setHoverBounds(80, (80 + coolSwaggerButton.width), newY, newY + coolSwaggerButton.height);
+            coolSwaggerButton.onHover = () -> {
+                if (!buttonWasClicked) {
+                    // Play a sound
+                    FlxG.sound.play(PathUtil.ofSound('blip'));
+                    // Tween the button to move to the right of the screen
+                    FlxTween.cancelTweensOf(coolSwaggerButton);
+                    FlxTween.tween(coolSwaggerButton, { x: 200 }, 0.2, {
+                        type: FlxTweenType.PERSIST,
+                        ease: FlxEase.quadOut
+                    });
+                }
+            };
+            coolSwaggerButton.onHoverLost = () -> {
+                if (!buttonWasClicked) {
+                    // Tween the button to move to the right of the screen
+                    FlxTween.cancelTweensOf(coolSwaggerButton);
+                    FlxTween.tween(coolSwaggerButton, { x: 80 }, 0.2, {
+                        type: FlxTweenType.PERSIST,
+                        ease: FlxEase.quadOut
+                    });
+                }
+            };
+            coolSwaggerButton.onClick = buttonClickFunctions.get(btn);
+            buttonGroup.add(coolSwaggerButton);
+            newY += 80;
+        }
 
         // Setup and add the flash that appears when the main menu is shown
         flashbang = new FlxSprite(0, 0);
@@ -150,95 +201,6 @@ class MainMenuState extends FlxTransitionableState {
         if (!CacheUtil.alreadySawIntro) {
             if (FlxG.keys.justPressed.ANY && !(Controls.binds.FULLSCREEN_JUST_PRESSED || Controls.justPressedAnyVolumeKeys())) {
                 _setupMainMenu();
-            }
-        } else {
-            // Avoid tweening and extra clicking on buttons
-            // when one was already clicked
-            if (!buttonWasClicked) {
-                // Loop through each button in the button group
-                for (button in buttonGroup.members) {
-                    // If the mouse is hovering over the button, then
-                    // tween the button to make it look like it's being hovered
-                    // (this line is so long oml)
-                    if (FlxG.mouse.overlaps(button) || ((FlxG.mouse.x >= 80) && (FlxG.mouse.y >= button.y) && (FlxG.mouse.y <= button.y + button.height) && (FlxG.mouse.x <= button.x + button.width) && (lastHoveredButton == button))) {
-                        // Make sure the button isn't already being hovered, otherwise
-                        // some crazy shit will happen!
-                        if (lastHoveredButton != button) {
-                            // Play a sound
-                            FlxG.sound.play(PathUtil.ofSound('blip'));
-                            lastHoveredButton = button;
-                            // Tween the button to move to the right of the screen
-                            buttonTween = FlxTween.tween(button, { x: 200 }, 0.2, {
-                                type: FlxTweenType.PERSIST,
-                                ease: FlxEase.quadOut
-                            });
-                        }
-                        // If the button has been clicked, then
-                        // do the action that is linked with the said button
-                        if (FlxG.mouse.justReleased) {
-                            // Make sure to tell the game that a button was clicked!
-                            buttonWasClicked = true;
-                            // Play a sound lol
-                            FlxG.sound.play(PathUtil.ofSound('vine-boom'));
-                            // Loop through each button and make 
-                            // them fade out (unless it's the button that was
-                            // clicked on, then make it the center of the screen)
-                            for (b in buttonGroup.members) {
-                                if (b != button) {
-                                    // Fade out each button 
-                                    // (excluding the clicked one of course)
-                                    FlxTween.tween(b, {alpha: 0}, 0.3, {
-                                        type: FlxTweenType.ONESHOT
-                                    });
-                                } else {
-                                    // Center the clicked button to make it the 
-                                    // :sparkles: ***main focus*** :sparkles:
-                                    FlxTween.tween(b, {x: (FlxG.width / 2) - (button.width / 2), y: (FlxG.height / 2) - (button.height / 2), size: 60}, 0.3, {
-                                        type: FlxTweenType.ONESHOT,
-                                        ease: FlxEase.quadOut
-                                    });
-                                }
-                            }
-
-                            // Do an action when a button was clicked
-                            // TODO: Try to make this more efficient?
-                            var canDisplayEasterEgg:Bool = FlxG.random.int(1, 5) == 3;
-                            new FlxTimer().start((button != exitButton) ? 1 : (!canDisplayEasterEgg) ? 1 : 2, (timer:FlxTimer) -> {
-                                if (button == campaignButton) {  // Campaign button action
-                                    // Switch to the campaign menu state
-                                    GeneralUtil.fadeIntoState(new CampaignMenuState(), Constants.TRANSITION_DURATION, false);
-                                } else if (button == optionsButton) {
-                                    // Switch to the options state
-                                    GeneralUtil.fadeIntoState(new OptionsMenuState(), Constants.TRANSITION_DURATION, false);
-                                } else if (button == exitButton) {  // Exit button action
-                                    if (canDisplayEasterEgg) {  // An easter egg shhhhhh
-                                        FlxG.sound.music.stop();
-                                        goofyAhhTroll.loadGraphic(PathUtil.ofImage('my_pc_now_weighs_42_tons'));
-                                        goofyAhhTroll.scale.set(2.3, 2.3);
-                                        FlxG.sound.play(PathUtil.ofSound('caseoh-nooooo'));
-                                        // Add a timer so the user can get the caseoh jumpscare lol
-                                        new FlxTimer().start(0.6, (timer:FlxTimer) -> {
-                                            GeneralUtil.closeGame();
-                                        });
-                                    } else {
-                                        // Just close the game if the user didn't get
-                                        // the caseoh easter egg *sob*
-                                        GeneralUtil.closeGame();
-                                    }
-                                }
-                            });
-                        }  
-                    } else if (lastHoveredButton == button) {
-                        lastHoveredButton = null;
-                        // Cancel the tween if the mouse is no longer hovering over the button
-                        buttonTween.cancel();
-                        // Tween the button back to its original position
-                        buttonTween = FlxTween.tween(button, { x: 80 }, 0.2, {
-                            type: FlxTweenType.PERSIST,
-                            ease: FlxEase.quadOut
-                        });
-                    }
-                }
             }
         }
 
@@ -351,5 +313,18 @@ class MainMenuState extends FlxTransitionableState {
                 });
             }
         );
+    }
+
+    private function _centerButton(b:ClickableText):Void {
+        // Play a goofy sound lol
+        FlxG.sound.play(PathUtil.ofSound('vine-boom'));
+        // Make sure any other button doesn't tween after being centered!
+        buttonWasClicked = true;
+        // Center the clicked button to make it the 
+        // :sparkles: ***m a i n  f o c u s*** :sparkles:
+        FlxTween.tween(b, { x: (FlxG.width / 2) - (b.width / 2), y: (FlxG.height / 2) - (b.height / 2), size: 60 }, 0.3, {
+            type: FlxTweenType.ONESHOT,
+            ease: FlxEase.quadOut
+        });
     }
 }

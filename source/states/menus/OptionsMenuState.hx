@@ -1,6 +1,14 @@
 package states.menus;
 
-import backend.util.SaveUtil;
+import backend.util.PathUtil;
+import flixel.tweens.FlxEase;
+import flixel.util.FlxTimer;
+import flixel.tweens.FlxTween;
+import flixel.FlxG;
+import flixel.text.FlxText.FlxTextBorderStyle;
+import flixel.util.FlxColor;
+import objects.ui.ClickableText;
+import flixel.group.FlxGroup.FlxTypedGroup;
 #if DISCORD_ALLOWED
 import backend.api.DiscordClient;
 #end
@@ -8,29 +16,65 @@ import backend.Controls;
 import backend.data.ClientPrefs;
 import backend.data.Constants;
 import backend.util.GeneralUtil;
-import flixel.FlxG;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
 
 /**
- * State that displays the options menu/
+ * State that displays the options menu.
  */
 class OptionsMenuState extends FlxTransitionableState {
 
-    var text:FlxText;
+    var options:Array<String> = [
+        'Gameplay',
+        'Controls',
+        'Other'
+    ];
+    var optionsGroup:FlxTypedGroup<ClickableText>;
 
     override function create() {
         super.create();
 
-        text = new FlxText('no options?\n*insert sad megamind picture here*');
-        text.color = FlxColor.BLACK;
-        text.size = 64;
-        text.updateHitbox();
-        text.alignment = FlxTextAlign.CENTER;
-        text.x = (FlxG.width / 2) - (text.width / 2);
-        text.y = (FlxG.height / 2) - (text.height / 2);
-        add(text);
+        // for testing (maybe idk) :p
+        FlxG.camera.bgColor = FlxColor.PINK;
+
+        optionsGroup = new FlxTypedGroup<ClickableText>();
+        add(optionsGroup);
+
+        var newX:Float = FlxG.width + 20;
+        var newY:Float = FlxG.height / 2;
+
+        for (_ in 0...Std.int(options.length / 2)) {
+            newY -= 93;  // 93 is the exact height of each option text
+        }
+
+        for (optn in options) {
+            var mewingStreak:ClickableText = new ClickableText();
+            mewingStreak.text = optn;
+            mewingStreak.size = 64;
+            mewingStreak.color = FlxColor.WHITE;
+            mewingStreak.updateHitbox();
+            mewingStreak.setPosition(newX, newY);
+            mewingStreak.setHoverBounds((FlxG.width - 330), FlxG.width, newY, newY + mewingStreak.height);
+            mewingStreak.setBorderStyle(FlxTextBorderStyle.SHADOW, FlxColor.BLACK, 3);
+            mewingStreak.onHover = () -> {
+                FlxG.sound.play(PathUtil.ofSound('blip'));
+                FlxTween.cancelTweensOf(mewingStreak);
+                FlxTween.tween(mewingStreak, { x: (FlxG.width - 330) - 80 }, 0.2, { type: FlxTweenType.PERSIST, ease: FlxEase.quadOut });
+            };
+            mewingStreak.onHoverLost = () -> {
+                FlxTween.cancelTweensOf(mewingStreak);
+                FlxTween.tween(mewingStreak, { x: (FlxG.width - 330) }, 0.2, { type: FlxTweenType.PERSIST, ease: FlxEase.quadOut });
+            };
+            optionsGroup.add(mewingStreak);
+            newY += mewingStreak.height + 10;
+        }
+
+        var newTime:Float = 0.3;
+        for (mbr in optionsGroup.members) {
+            new FlxTimer().start(newTime, (_) -> {
+                FlxTween.tween(mbr, { x: (FlxG.width - 330) }, 0.5, { type: FlxTweenType.PERSIST, ease: FlxEase.quadOut });
+            });
+            newTime += 0.2;
+        }
 
         #if DISCORD_ALLOWED
         if (ClientPrefs.options.discordRPC) {
