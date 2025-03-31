@@ -11,7 +11,7 @@ import flixel.util.FlxSave;
 class SaveUtil {
     
     /**
-     * Save ***ALL*** of the user's preferences.
+     * Save ***ALL*** of the user's preferences and progress.
      */
     public static function saveAll() {
         saveUserOptions();

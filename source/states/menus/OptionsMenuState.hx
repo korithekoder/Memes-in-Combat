@@ -1,5 +1,7 @@
 package states.menus;
 
+import flixel.FlxSubState;
+import substates.options.GameplaySettingsSubState;
 import backend.util.PathUtil;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxTimer;
@@ -28,13 +30,20 @@ class OptionsMenuState extends FlxTransitionableState {
         'Controls',
         'Other'
     ];
+
     var optionsGroup:FlxTypedGroup<ClickableText>;
+
+    var optionsOnSelect:Map<String, Void -> Void>;
 
     override function create() {
         super.create();
 
         // for testing (maybe idk) :p
         FlxG.camera.bgColor = FlxColor.PINK;
+
+        optionsOnSelect = [
+            'Gameplay' => () -> _openOptionsMenu(new GameplaySettingsSubState())
+        ];
 
         optionsGroup = new FlxTypedGroup<ClickableText>();
         add(optionsGroup);
@@ -55,6 +64,7 @@ class OptionsMenuState extends FlxTransitionableState {
             mewingStreak.setPosition(newX, newY);
             mewingStreak.setHoverBounds((FlxG.width - 330), FlxG.width, newY, newY + mewingStreak.height);
             mewingStreak.setBorderStyle(FlxTextBorderStyle.SHADOW, FlxColor.BLACK, 3);
+            mewingStreak.onClick = optionsOnSelect.get(optn);
             mewingStreak.onHover = () -> {
                 FlxG.sound.play(PathUtil.ofSound('blip'));
                 FlxTween.cancelTweensOf(mewingStreak);
@@ -89,5 +99,15 @@ class OptionsMenuState extends FlxTransitionableState {
 		if (Controls.binds.UI_BACK_JUST_PRESSED) {
             GeneralUtil.fadeIntoState(new MainMenuState(), Constants.TRANSITION_DURATION);
         }
+    }
+
+    override function closeSubState() {
+        super.closeSubState();
+        optionsGroup.visible = true;
+    }
+
+    private function _openOptionsMenu(substate:FlxSubState):Void {
+        optionsGroup.visible = false;
+        openSubState(substate);
     }
 }

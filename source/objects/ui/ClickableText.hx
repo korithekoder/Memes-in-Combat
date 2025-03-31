@@ -86,6 +86,14 @@ class ClickableText extends FlxText {
     }
 
     /**
+     * Gets `this` clickable button's hover bounds as an array.
+     * @return The hover bounds as an array.
+     */
+    public inline function getHoverBoundsArray():Array<Float> {
+        return [bxl, bxr, byt, byb];
+    }
+
+    /**
      * Sets the ***X*** hover bounds.
      * 
      * @param bxl Left X hover bound.

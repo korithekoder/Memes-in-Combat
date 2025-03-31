@@ -48,6 +48,7 @@ class DiscordClient {
 
     /**
      * Set the game's Discord rich presence.
+     * 
      * @param details       The details of the current presence.
      * @param state         The state of the current presence.
      * @param largeImageKey The ID of the large image to be set.

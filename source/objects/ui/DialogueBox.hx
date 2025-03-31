@@ -182,14 +182,17 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
     //      GETTERS AND SETTERS
     // ------------------------------
 
+    @:noCompletion
     public inline function get_speechData():Dynamic {
         return this._speechData;
     }
 
+    @:noCompletion
     public inline function get_speakerId():String {
         return this._speakerId;
     }
 
+    @:noCompletion
     public inline function get_speaker():FlxSprite {
         return this._speaker;
     }
@@ -319,7 +322,8 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
         this._oldBubbleData = this._currentBubbleData;
 
         for (bubble in this._speechData) {
-            if (bubble.responsefrom.contains(this._currentBubbleData.responses[this._hoveredResponse - 1])) {
+            var rf:Array<String> = bubble.responsefrom;  // Make the array in the JSON data a variable because HTML whines about it :p 
+            if (rf.contains(this._currentBubbleData.responses[this._hoveredResponse - 1])) {
                 this._currentBubbleData = bubble;
                 break;
             }

@@ -24,7 +24,7 @@ import haxe.Exception;
     /**
      * Should the dialogue boxes use animations when writing text?
      */
-     public var dialogueAnimations:Bool = true;
+    public var dialogueAnimations:Bool = true;
 }
 
 /**
@@ -85,6 +85,17 @@ class ClientPrefs {
     // -----------------------------
 
     /**
+     * Get and return a client preference by its ID.
+     * 
+     * @param preference The preference to get as a `String`.
+     * @return           The value of the preference. If it does not exist, then
+     *                   `null` is returned instead.
+     */
+    public static function getClientPreference(preference:String):Any {
+        return Reflect.field(_options, preference);
+    }
+
+    /**
      * Sets a user's option.
      * 
      * @param setting The setting to be set.
@@ -130,11 +141,14 @@ class ClientPrefs {
         else
             _options = _defaultOptions;
 
-        for (optn in Reflect.fields(_defaultOptions)) {
-            if (!Reflect.hasField(_options, optn)) {
-                Reflect.setField(_options, optn, Reflect.field(_defaultOptions, optn));
-            }
-        }
+        // Loop through each setting from the obtained
+        // settings to make sure it has every field in the
+        // default settings!
+        // for (optn in Reflect.fields(_defaultOptions)) {
+        //     if (!Reflect.hasField(_options, optn)) {
+        //         Reflect.setField(_options, optn, Reflect.field(_defaultOptions, optn));
+        //     }
+        // }
 
         // Load controls
         if (controlsData.data.keyboard != null)
@@ -161,7 +175,7 @@ class ClientPrefs {
         FlxG.sound.volumeDownKeys = [controlsKeyboard.get('v_down')];
         FlxG.sound.muteKeys = [controlsKeyboard.get('v_mute')];
 
-        FlxG.log.add("Loaded all client preferences and controls successfully.");
+        FlxG.log.add('Loaded all client preferences and controls successfully!');
 
         // Respectfully close the saves to
         // prevent data leaks

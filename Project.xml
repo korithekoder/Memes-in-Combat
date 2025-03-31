@@ -4,7 +4,7 @@
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Memes in Combat" file="Memes in Combat" main="Main" package="net.korithekoder.memesincombat" packageName="net.korithekoder.memesincombat" version="1.0.0" company="korithekoder" />
+	<app title="Memes in Combat" file="Memes in Combat" main="Main" package="net.korithekoder.memesincombat" packageName="net.korithekoder.memesincombat" version="0.1.0-alpha" company="korithekoder" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -39,6 +39,15 @@
 	<assets path="assets" />
 
 	<assets path="assets/shared/data" include="*.json" />
+
+	<assets path="assets/shared/sounds" include="*.mp3" if="web" />
+	<assets path="assets/shared/sounds" exclude="*.mp3" if="desktop" />
+	<assets path="assets/music" include="*.mp3" if="web" />
+	<assets path="assets/music" exclude="*.mp3" if="desktop" />
+	<assets path="assets/shared/sounds" include="*.ogg" if="desktop" />
+	<assets path="assets/shared/sounds" exclude="*.ogg" if="web" />
+	<assets path="assets/music" include="*.ogg" if="desktop" />
+	<assets path="assets/music" exclude="*.ogg" if="web" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
