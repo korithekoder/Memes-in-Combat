@@ -14,8 +14,14 @@ class CacheUtil {
 
     /**
      * Did the user already see the intro?
+     * (This is for loading from and to the main menu when the game hasn't closed yet.)
      */
     public static var alreadySawIntro:Bool = false;
+
+    /**
+     * Can the user skip the intro if they have seen it already?
+     */
+    public static var canSkipIntro:Bool = false;
 
     /**
      * Can the game play menu music when the user leaves gameplay?

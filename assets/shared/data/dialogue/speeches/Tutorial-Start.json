@@ -1,7 +1,7 @@
 [
     {
         "responsefrom": [],
-        "text": "Yo wsg lil bro.",
+        "text": "Yo wsg lil' bro.",
         "speaker": "troll",
         "emotion": "normal",
         "responses": [
@@ -11,43 +11,53 @@
     },
     {
         "responsefrom": [
-            "yo wsp"
+            "stfu weirdo"
         ],
-        "text": "Soooooo...",
+        "text": "...Bro I just fucking met you.",
         "speaker": "troll",
         "emotion": "normal",
         "responses": [
-            "..?",
-            "why arent you off my screen yet you freak"
+            "im just joking i swear",
+            "and i dont care :3"
         ]
     },
     {
         "responsefrom": [
+            "im just joking i swear"
+        ],
+        "text": "Oh, well, uuhhh...",
+        "speaker": "troll",
+        "emotion": "normal",
+        "responses": [
+            "..?"
+        ]
+    },
+    {
+        "responsefrom": [
+            "yo wsp",
             "..?"
         ],
-        "text": "you wanna be the most iconic user in internet history, right?",
+        "text": "So apparently you want to become the most popular user on the entire internet, right?",
         "speaker": "troll",
         "emotion": "normal",
         "responses": [
-            "mhm",
-            "stop yapping"
+            "ya",
+            "*plays get out sfx*"
         ]
     },
     {
         "responsefrom": [
-            "mhm"
+            "ya"
         ],
-        "text": "well then, let's get started!",
+        "text": "Well then, let's learn the basics mufucka >:)",
         "speaker": "troll",
         "emotion": "normal",
         "responses": []
     },
     {
         "responsefrom": [
-            "stfu weirdo",
-            "bro get tf out of my monitor",
-            "why arent you off my screen yet you freak",
-            "stop yapping"
+            "and i dont care :3",
+            "*plays get out sfx*"
         ],
         "text": "Wow, okay, I see how it is...",
         "speaker": "troll",

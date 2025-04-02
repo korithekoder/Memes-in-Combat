@@ -49,7 +49,12 @@ class Constants {
     /**
      * The name of the save file for the player's progress.
      */
-    public static var PROGRESS_SAVE_BIND_ID:String = 'progress';
+    public static final PROGRESS_SAVE_BIND_ID:String = 'progress';
+
+    /**
+     * The name of the save file for the player's progress.
+     */
+    public static final RANDOM_BULLSHIT_SAVE_BIND_ID:String = 'random-bullshit';
 
     /**
      * The splash texts that are displayed on the main menu.

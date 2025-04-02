@@ -1,5 +1,6 @@
 package backend.util;
 
+import backend.api.DiscordClient;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -47,6 +48,9 @@ class GeneralUtil {
      */
     public static function closeGame():Void {
         SaveUtil.saveAll();
+        #if DISCORD_ALLOWED
+        DiscordClient.shutdown();
+        #end
         #if html5
         Browser.window.close();
         #elseif desktop

@@ -17,6 +17,7 @@ class SaveUtil {
         saveUserOptions();
         saveUserControls();
         saveUserProgress();
+        saveUserRandomBullshit();
     }
 
     /**
@@ -32,6 +33,9 @@ class SaveUtil {
 
         // Save the last volume used
         optionsSave.data.lastVolume = (CacheUtil.isFocused) ? FlxG.sound.volume : CacheUtil.lastVolumeUsed;
+
+        // Save if the user had fullscreen enabled
+        optionsSave.data.fullscreen = FlxG.fullscreen;
 
         // For checking if the data saved
         var didOptionsSave:Bool = optionsSave.flush();
@@ -96,6 +100,31 @@ class SaveUtil {
     }
 
     /**
+     * Saves all of the user's random bullshit, such as if they
+     * have already seen the intro, easter eggs, etc.
+     */
+     public static function saveUserRandomBullshit():Void {
+        // Create and bind the save
+        var randomBullshitSave:FlxSave = new FlxSave();
+        randomBullshitSave.bind(Constants.RANDOM_BULLSHIT_SAVE_BIND_ID, PathUtil.getSavePath());
+
+        // Save if the user has seen the intro already
+        randomBullshitSave.data.hasSeenIntro = CacheUtil.canSkipIntro;
+
+        // For checking if the data saved
+        var didRandomBullshitSave:Bool = randomBullshitSave.flush();
+
+        // Close the bind
+        randomBullshitSave.close();
+
+        // Log if all progress was saved
+        if (didRandomBullshitSave)
+            FlxG.log.add('All random bullshit has been saved!');
+        else
+            FlxG.log.warn('All random bullshit failed to save.');
+    }
+
+    /**
      * Loads all of the user's progress.
      */
     public static function loadUserProgress():Void {
@@ -109,6 +138,24 @@ class SaveUtil {
 
         // Close the bind
         progressSave.close();
+    }
+
+    /**
+     * Loads all of the random bullshit for the player.
+     */
+    public static function loadUserRandomBullshit():Void {
+        // Create and bind the save
+        var randomBullshitSave:FlxSave = new FlxSave();
+        randomBullshitSave.bind(Constants.RANDOM_BULLSHIT_SAVE_BIND_ID, PathUtil.getSavePath());
+
+        // Assign the data
+        if (randomBullshitSave.data.hasSeenIntro != null) 
+            CacheUtil.canSkipIntro = randomBullshitSave.data.hasSeenIntro;
+        else
+            CacheUtil.canSkipIntro = false;
+
+        // Close the bind
+        randomBullshitSave.close();
     }
 
     /**

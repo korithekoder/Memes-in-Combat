@@ -141,6 +141,13 @@ class ClientPrefs {
         else
             _options = _defaultOptions;
 
+        // Load if the player had fullscreen enabled the last time
+        // they had the game open
+        if (optionsData.data.fullscreen != null) 
+            FlxG.fullscreen = optionsData.data.fullscreen;
+        else
+            FlxG.fullscreen = false;
+
         // Loop through each setting from the obtained
         // settings to make sure it has every field in the
         // default settings!

@@ -40,23 +40,30 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
     private var _speakerData:Dynamic;
     private var _speakerEmotions:Array<Dynamic>;
     private var _currentSpeakerEmotion:String = '';
+    private var _isDoneSpeaking:Bool = false;
 
     private var _dialogueText:FlxText;
     private var _dialogueBoxBase:FlxSprite;
 
     private var _currentDialogueIdx:Int = 0;
     private var _currentBubbleData:Dynamic;
+    private var _oldBubbleData:Dynamic;
     private var _foundStartingBubble:Bool = false;
 
-    private var _canEnterPrompt:Bool = true;
+    private var _canEnterPrompt:Bool = false;
 
     private var _response1:ClickableText;
     private var _response2:ClickableText;
-    private var _oldBubbleData:Dynamic;
+
+    private var _lastResponse:String;
+    private var _lastResponseIndex:Int;
 
     private var _hoveredResponse:Int = 1;
-
     private var _hoverArrow:FlxSprite;
+
+    private var _speakLoopAnimationTimer:FlxTimer = new FlxTimer();
+    private var _onFinishSpeakingAnimationTimer:FlxTimer = new FlxTimer();
+    private var _userAcceptBindPressTimer:FlxTimer = new FlxTimer();
 
     /**
      * Constructs a new dialogue instance, which is responsible for displaying
@@ -158,10 +165,8 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
             if (bubble.responsefrom.length == 0) {
                 this._foundStartingBubble = true;
                 this._currentBubbleData = bubble;
-                this.setResponses(bubble);
-                this._response1.updateHoverBounds();
-                this._response2.updateHoverBounds();
                 this._currentSpeakerEmotion = this._currentBubbleData.emotion;
+                _changeDialogue(true);
                 break;
             }
         }
@@ -192,9 +197,12 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
         return this._speakerId;
     }
 
-    @:noCompletion
-    public inline function get_speaker():FlxSprite {
-        return this._speaker;
+    public inline function getLastResponse():String {
+        return _lastResponse;
+    }
+
+    public inline function getLastResponseIndex():Int {
+        return _lastResponseIndex;
     }
 
     // -----------------------------
@@ -213,7 +221,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
         }
 
         // If the user presses the accept bind, then load the next response
-        if (Controls.binds.UI_SELECT_JUST_PRESSED && this._canEnterPrompt) {
+        if ((Controls.binds.UI_SELECT_JUST_PRESSED) && this._canEnterPrompt) {
             _changeDialogue();
             if (this._currentBubbleData == this._oldBubbleData) {
                 this.fadeOutAndDestroy();
@@ -228,20 +236,19 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
      * @param playHoverSound Should the arrow play a sound when it changes options?
      */
     public function changeHoverArrowLocation(location:Int, playHoverSound:Bool = true):Void {
-        if (playHoverSound && this._response2.text != '') {
+        if (playHoverSound && _response2.text != '') {
             FlxG.sound.play(PathUtil.ofSound('blip'));
         }
         switch (location) {
             case (1):
-                this._hoverArrow.x = (this._response1.x + (this._response1.width / 2) - (this._hoverArrow.width / 2));
-                this._hoverArrow.y = (this._response1.y + this._response1.height) + 1;
+                _hoverArrow.x = (_response1.x + (_response1.width / 2) - (_hoverArrow.width / 2));
+                _hoverArrow.y = (_response1.y + _response1.height) + 1;
             case (2):
-                if (this._response2.text == '') {
-                    this._hoveredResponse = 1;
+                if (_response2.text == '') {
                     return;
                 }
-                this._hoverArrow.x = (this._response2.x + (this._response2.width / 2) - (this._hoverArrow.width / 2));
-                this._hoverArrow.y = (this._response2.y + this._response2.height) + 1;
+                _hoverArrow.x = (_response2.x + (_response2.width / 2) - (_hoverArrow.width / 2));
+                _hoverArrow.y = (_response2.y + _response2.height) + 1;
         }
     }
 
@@ -256,15 +263,15 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
             case (1):
                 this._response1.text = text;
                 this._response1.updateHitbox();
-                this._response1.updateHoverBounds();
                 this._response1.x = (this._dialogueBoxBase.x + 30);
                 this._response1.y = (this._dialogueBoxBase.y + this._dialogueBoxBase.height) - this._response1.height - 30;
+                this._response1.updateHoverBounds();
             case (2):
                 this._response2.text = text;
                 this._response2.updateHitbox();
-                this._response2.updateHoverBounds();
                 this._response2.x = (this._response1.x + this._response1.width) + 20;
-                this._response2.y = (this._dialogueBoxBase.y + this._dialogueBoxBase.height) - this._response2.height - 30;       
+                this._response2.y = (this._dialogueBoxBase.y + this._dialogueBoxBase.height) - this._response2.height - 30;
+                this._response2.updateHoverBounds();      
         }
     }
 
@@ -276,15 +283,18 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
     public function setResponses(bubbleData:Dynamic):Void {
         var isR1Null:Bool = (bubbleData.responses[0] == null);
         var isR2Null:Bool = (bubbleData.responses[1] == null);
-        this.setResponse(1, (!isR1Null) ? bubbleData.responses[0] : 'Press ${ClientPrefs.get_controlsKeyboard().get('ui_select').toString()} to continue...');
-        this.setResponse(2, (!isR2Null) ? bubbleData.responses[1] : '');
+        setResponse(1, (!isR1Null) ? bubbleData.responses[0] : 'Press ${ClientPrefs.get_controlsKeyboard().get('ui_select').toString()} to continue...');
+        setResponse(2, (!isR2Null) ? bubbleData.responses[1] : '');
     }
 
     /**
      * Add a cool fadeout and then destroy `this` dialogue box.
      */
     public function fadeOutAndDestroy(duration:Float = 1):Void {
-        this._canEnterPrompt = false;
+        _canEnterPrompt = false;
+        _speakLoopAnimationTimer.cancel();
+        _userAcceptBindPressTimer.cancel();
+        _onFinishSpeakingAnimationTimer.cancel();
         GeneralUtil.tweenSpriteGroup(this, { alpha: 0 }, duration, { type: FlxTweenType.ONESHOT });
         new FlxTimer().start(duration, (_) -> { 
             CacheUtil.isDialogueFinished = true; 
@@ -293,7 +303,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
     }
 
     private function _setHoveredResponse(r:Int) {
-        this._hoveredResponse = r;
+        _hoveredResponse = r;
         switch (r) {
             case (1):
                 changeHoverArrowLocation(1);
@@ -305,36 +315,147 @@ class DialogueBox extends FlxTypedGroup<FlxSprite> {
     private function _switchHoveredResponse(r:Int) {
         switch (r) {
             case (1):
-                this._hoveredResponse--;
-                if (this._hoveredResponse < 1) this._hoveredResponse = 2;
-                changeHoverArrowLocation(this._hoveredResponse);
+                _hoveredResponse--;
+                if (_hoveredResponse < 1) _hoveredResponse = 2;
+                changeHoverArrowLocation(_hoveredResponse);
             case (2):
-                this._hoveredResponse++;
-                if (this._hoveredResponse > 2) this._hoveredResponse = 1;
-                changeHoverArrowLocation(this._hoveredResponse);
+                _hoveredResponse++;
+                if (_hoveredResponse > 2) _hoveredResponse = 1;
+                changeHoverArrowLocation(_hoveredResponse);
         }
     }
 
-    private function _changeDialogue():Void {
-        this._response1.isHovered = false;
-        this._response2.isHovered = false;
+    private function _changeDialogue(isFirstBubble:Bool = false):Void {
+        // Reset hover states for both responses
+        _response1.isHovered = false;
+        _response2.isHovered = false;
 
-        this._oldBubbleData = this._currentBubbleData;
+        // Set the last response text and index
+        _lastResponse = this._currentBubbleData.responses[this._hoveredResponse - 1];
+        _lastResponseIndex = _hoveredResponse;
 
-        for (bubble in this._speechData) {
-            var rf:Array<String> = bubble.responsefrom;  // Make the array in the JSON data a variable because HTML whines about it :p 
-            if (rf.contains(this._currentBubbleData.responses[this._hoveredResponse - 1])) {
-                this._currentBubbleData = bubble;
-                break;
+        // Store the current bubble data as the old bubble data
+        _oldBubbleData = this._currentBubbleData;
+
+        // Clear the text of both responses and hide the hover arrow
+        _response1.text = '';
+        _response2.text = '';
+        _hoverArrow.visible = false; 
+
+        // Disable the ability to enter a prompt temporarily
+        _canEnterPrompt = false;
+
+        // If this is not the first bubble, find the next bubble based on the current response
+        if (!isFirstBubble) {
+            for (bubble in this._speechData) {
+                // Extract the "responsefrom" array from the bubble data because HTML5 whines about it :/
+                var rf:Array<String> = bubble.responsefrom;
+                // Check if the current response matches any elements in the "responsefrom" array
+                if (rf.contains(_lastResponse)) {
+                    _currentBubbleData = bubble;  // Set the next bubble as the current bubble
+                    break;
+                }
             }
         }
 
-        setResponses(this._currentBubbleData);
+        // Reset the hovered response to the first response
+        _hoveredResponse = 1;
+
+        // Total duration of the speaking animation
+        var speakingLength:Float = 0;
+        // Tracks the current length of the displayed text
+        var currentSpliceLength:Int = 0;  
+        // The full text of the current bubble
+        var speakText:String = _currentBubbleData.text; 
+
+        // The text that is actually displayed to the user
+        var realText:String = '';
+        // Create a dummy text that is used to calculating width for the text
+        var dummyText:FlxText = new FlxText();
+        dummyText.size = _dialogueText.size;
+        dummyText.visible = false;
+        dummyText.updateHitbox();
+
+        // Loop through each word and insert new line escape characters when needed
+        for (word in speakText.split(' ')) {
+            dummyText.text += '$word ';
+            dummyText.updateHitbox();
+            if (!(dummyText.width > _dialogueBoxBase.width - 8)) {
+                realText += '$word ';
+            } else {
+                realText += '\n$word ';
+                dummyText.text = '';
+                dummyText.updateHitbox();
+            }
+        }
+
+        // If the dialogue animations option is ON, then
+        // animate the text to make it look :sparkles: fancy :sparkles:
+        if (ClientPrefs.options.dialogueAnimations) {
+            // Calculate the total speaking duration based on the text length
+            for (_ in 0...speakText.length) {
+                speakingLength += 0.03;
+            }
+
+            // Start a timer to display the text character by character.
+            _speakLoopAnimationTimer.start(
+                0.03,  // Interval for each character to appear
+                (_) -> {
+                    // Increment the displayed text length
+                    currentSpliceLength++;
+                    // Update the displayed text
+                    _dialogueText.text = realText.substring(0, currentSpliceLength);
+                    // Play a sound effect for the current character
+                    FlxG.sound.play(PathUtil.ofSound('dialogue/${this._speakerId}-${this._currentSpeakerEmotion}'), false, false);
+                },
+                speakText.length  // Number of iterations equal to the text length
+            );
+
+            // Start a timer to allow skipping the animation by pressing a key or clicking
+            _userAcceptBindPressTimer.start(
+                0.0001,  // Very short interval to check for input
+                (_) -> {
+                    // If the user presses the select key or clicks anywhere on the screen, skip the animation
+                    if (Controls.binds.UI_SELECT_JUST_PRESSED || FlxG.mouse.justPressed) {
+                        // Display the full text immediately
+                        _dialogueText.text = realText;  
+
+                        // Stop all timers
+                        _speakLoopAnimationTimer.cancel();
+                        _userAcceptBindPressTimer.cancel();
+                        _onFinishSpeakingAnimationTimer.cancel();
+                        
+                        // Set the responses for the next bubble
+                        _resetResponses(); 
+                    }
+                },
+                0  // Infinite repetitions until manually canceled
+            );
+
+            // Start a timer to reset responses after the speaking animation finishes.
+            this._onFinishSpeakingAnimationTimer.start(
+                speakingLength, // Duration of the speaking animation
+                (_) -> {
+                    // Reset the responses for the next bubble
+                    _resetResponses();
+                }
+            );
+        } else {
+            // If animations are disabled, display the full text immediately
+            _dialogueText.text = realText;
+            // Play a sound effect for the dialogue
+            FlxG.sound.play(PathUtil.ofSound('dialogue/${this._speakerId}-${this._currentSpeakerEmotion}'), false, false);
+            // Set the responses for the current bubble
+            _resetResponses();
+        }
+    }
+
+    private function _resetResponses() {
+        setResponses(_currentBubbleData);
         changeHoverArrowLocation(1, false);
-        this._hoveredResponse = 1;
-        this._dialogueText.text = this._currentBubbleData.text;
-        this._currentSpeakerEmotion = this._currentBubbleData.emotion;
-        this._speaker.animation.play(this._currentSpeakerEmotion);
-        FlxG.sound.play(PathUtil.ofSound('dialogue/${this._speakerId}-${this._currentSpeakerEmotion}'), false, false);
+        _hoverArrow.visible = true;
+        _currentSpeakerEmotion = _currentBubbleData.emotion;
+        _speaker.animation.play(_currentSpeakerEmotion);
+        new FlxTimer().start(0.3, (_) -> { _canEnterPrompt = true; });
     }
 }

@@ -31,10 +31,10 @@ class CampaignMenuState extends FlxTransitionableState {
     var accessDeniedAttempts:Int = 0;
 
     var michaelJordan:FlxSprite;
-    var isMichaelJordanVisible:Bool = false;
 
     var currentYear:Int = 0;
-    var canScroll:Bool = true; 
+    var canScroll:Bool = true;
+    var hasSelectedYear:Bool = false;
 	
 	override public function create() {
 		super.create();
@@ -87,7 +87,7 @@ class CampaignMenuState extends FlxTransitionableState {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
-        if (!isMichaelJordanVisible) {
+        if (!michaelJordan.visible) {
             // Check if the user wants to go back to the main menu or play the selected year
 			if (Controls.binds.UI_BACK_JUST_PRESSED) { // Go back to the main menu
                 GeneralUtil.fadeIntoState(new MainMenuState(), Constants.TRANSITION_DURATION);
@@ -95,7 +95,10 @@ class CampaignMenuState extends FlxTransitionableState {
 				var year:CampaignYearIcon = campaignYears.members[currentYear];
 
                 // Check if the year is unlocked
-                if (CacheUtil.unlockedYears.contains(year.get_year())) {
+                if (CacheUtil.unlockedYears.contains(year.year)) {
+                    // Make sure the user can't scroll through the years
+                    // when one was selected
+                    hasSelectedYear = true;
                     // If the year is unlocked, tween the other years and go to the play state
                     for (y in campaignYears.members) {
                         if (y != year) {
@@ -125,7 +128,7 @@ class CampaignMenuState extends FlxTransitionableState {
             }
         }
 
-        if (!isMichaelJordanVisible) {
+        if (!michaelJordan.visible && !hasSelectedYear) {
             // Scroll through the years
             if (Controls.binds.UI_DOWN_PRESSED) {
                 if (canScroll && !(currentYear >= campaignYears.length - 1)) {
@@ -153,26 +156,24 @@ class CampaignMenuState extends FlxTransitionableState {
             }
 
 			// Get the paths to the image and xml file
-			var paths:Array<String> = PathUtil.ofSpriteSheet('lmfao/stop-it-get-some-help');
+			var paths:Array<String> = PathUtil.ofSpriteSheet('lmfao/michael-jordan');
 
             // Stop the music and play the Michael Jordan sprite
             FlxTween.cancelTweensOf(FlxG.sound.music);
             FlxG.sound.music.volume = 0;
             FlxG.sound.play(PathUtil.ofSound('stop-it-get-some-help'));
 			michaelJordan.frames = FlxAtlasFrames.fromSparrow(paths[0], paths[1]);
-            michaelJordan.animation.addByIndices('stop-it-get-some-help', 'stop-it-get-some-help_', frames, '', 11, false);
-            michaelJordan.animation.play('stop-it-get-some-help');
+            michaelJordan.animation.addByIndices('michael-jordan', 'michael-jordan_', frames, '', 11, false);
+            michaelJordan.animation.play('michael-jordan');
             michaelJordan.x = (FlxG.width / 2) - (michaelJordan.width / 2);
             michaelJordan.y = (FlxG.height / 2) - (michaelJordan.height / 2);
             michaelJordan.visible = true;
-            isMichaelJordanVisible = true;
             accessDeniedAttempts = 0;
             accessDeniedVolume = 0.2;
 
             // Hide the Michael Jordan sprite after 2.4 seconds
             new FlxTimer().start(2.4, (_) -> {
                 michaelJordan.visible = false;
-                isMichaelJordanVisible = false;
                 FlxTween.tween(FlxG.sound.music, { volume: 1 }, 1.5, { type: FlxTweenType.ONESHOT });
             });
         }
@@ -183,7 +184,7 @@ class CampaignMenuState extends FlxTransitionableState {
         if (!canScroll) return;
         // Scroll the years to make it look :sparkles: fancy :sparkles:
         for (year in campaignYears.members) {
-            for (obj in year.members){
+            for (obj in year.members) {
                 FlxTween.tween(obj, { y: obj.y + (220 * dir) }, duration, { type: FlxTweenType.PERSIST, ease: FlxEase.quadOut });
             }
         }

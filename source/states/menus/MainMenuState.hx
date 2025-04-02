@@ -1,8 +1,11 @@
 package states.menus;
 
+import backend.data.ClientPrefs;
+#if DISCORD_ALLOWED
+import backend.api.DiscordClient;
+#end
 import objects.ui.ClickableText;
 import backend.Controls;
-import backend.data.ClientPrefs;
 import backend.data.Constants;
 import backend.util.CacheUtil;
 import backend.util.GeneralUtil;
@@ -16,9 +19,6 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-#if DISCORD_ALLOWED
-import backend.api.DiscordClient;
-#end
 
 /**
  * State that displays the main menu.
@@ -37,6 +37,7 @@ class MainMenuState extends FlxTransitionableState {
     var flashbang:FlxSprite;
 
     var goofyAhhTroll:FlxSprite;
+    var dumbassBitch:FlxSprite;
 
     var buttons:Array<String> = [
         'Campaign',
@@ -83,6 +84,15 @@ class MainMenuState extends FlxTransitionableState {
         goofyAhhTroll.y = FlxG.height - goofyAhhTroll.height - 40;
         add(goofyAhhTroll);
 
+        dumbassBitch = new FlxSprite();
+        dumbassBitch.loadGraphic(PathUtil.ofImage('dumbass-bitch'));
+        dumbassBitch.scale.set(0.5, 0.5);
+        dumbassBitch.updateHitbox();
+        dumbassBitch.x = (FlxG.width / 2) - (dumbassBitch.width / 2);
+        dumbassBitch.y = (FlxG.height / 2) + 80;
+        dumbassBitch.visible = false;
+        add(dumbassBitch);
+
         // Setup the button group
         buttonGroup = new FlxTypedGroup<ClickableText>();
         buttonGroup.visible = false;
@@ -105,8 +115,8 @@ class MainMenuState extends FlxTransitionableState {
             },
             'Quit Game' => () -> {
                 _centerButton(buttonGroup.members[2]);
-                new FlxTimer().start(1, (_) -> {
-                    var canDisplayEasterEgg = FlxG.random.int(1, 5) == 3;
+                var canDisplayEasterEgg = FlxG.random.int(1, 5) == 3;
+                new FlxTimer().start((!canDisplayEasterEgg) ? 1 : 3, (_) -> {
                     if (canDisplayEasterEgg) {  // An easter egg shhhhhh
                         FlxG.sound.music.stop();
                         goofyAhhTroll.loadGraphic(PathUtil.ofImage('my_pc_now_weighs_42_tons'));
@@ -173,9 +183,11 @@ class MainMenuState extends FlxTransitionableState {
         });
 
         // Start the "Press any key to skip" text tween that makes it fade in
-        FlxTween.tween(pressAnyKeyText, { alpha: 1 }, 2, {
-            type: FlxTweenType.ONESHOT
-        });
+        if (CacheUtil.canSkipIntro) {
+            FlxTween.tween(pressAnyKeyText, { alpha: 1 }, 2, {
+                type: FlxTweenType.ONESHOT
+            });
+        }
 
         // Set the Discord rich presence
         #if DISCORD_ALLOWED
@@ -198,7 +210,7 @@ class MainMenuState extends FlxTransitionableState {
 
         // If the player hasn't seen the intro yet, they can skip it by pressing any key
         // (excluding the fullscreen and volume binds)
-        if (!CacheUtil.alreadySawIntro) {
+        if (!CacheUtil.alreadySawIntro && CacheUtil.canSkipIntro) {
             if (FlxG.keys.justPressed.ANY && !(Controls.binds.FULLSCREEN_JUST_PRESSED || Controls.justPressedAnyVolumeKeys())) {
                 _setupMainMenu();
             }
@@ -250,8 +262,10 @@ class MainMenuState extends FlxTransitionableState {
                 _setIntroText('A game by', true);
             case (2):
                 _setIntroText('korithekoder', true);
+                dumbassBitch.visible = true;
             case (3):
                 _setIntroText('');
+                dumbassBitch.visible = false;
             case (4):
                 _setIntroText('Music by', true);
             case (5):
@@ -289,13 +303,13 @@ class MainMenuState extends FlxTransitionableState {
         introText.visible = false;
         titleText.visible = true;
         pressAnyKeyText.visible = false;
+        buttonGroup.visible = true;
+        dumbassBitch.visible = false;
 
         FlxG.camera.bgColor = FlxColor.WHITE;
 
         introStageTimer1.cancel();
         introStageTimer2.cancel();
-
-        buttonGroup.visible = true;
 
         flashbang.alpha = 1;
         FlxTween.tween(flashbang, { alpha: 0 }, 3, {
@@ -303,6 +317,7 @@ class MainMenuState extends FlxTransitionableState {
         });
 
         CacheUtil.alreadySawIntro = true;
+        CacheUtil.canSkipIntro = true;
 
         new FlxTimer().start(
             1.75,

@@ -67,7 +67,7 @@ class PathUtil {
      * be in the same location or otherwise this function will fail.
      * 
      * @param name The name of the sprite sheet.
-     * @return     An array of the paths to the image.
+     * @return     An array of the paths to the image and the `.xml` file.
      */
     public static inline function ofSpriteSheet(name:String):Array<String> {
         return ['assets/shared/images/spritesheets/$name.png', 'assets/shared/images/spritesheets/$name.xml'];

@@ -11,10 +11,13 @@ import flixel.FlxSubState;
  */
 class GameplaySettingsSubState extends FlxSubState {
     
-    var options:Array<OptionCheckBox> = [
-        new OptionCheckBox(20, (FlxG.height / 2), 'Dialogue Animations', 'dialogueAnimations'),
-        new OptionCheckBox(20, (FlxG.height / 2) + 200, 'Discord Rich Presence', 'discordRPC'),
-        new OptionCheckBox(20, (FlxG.height / 2) + 400, 'Discord Rich Presence', 'test')
+    var options:Map<String, String> = [
+        'Dialogue Animations' => 'dialogueAnimations',
+        #if DISCORD_ALLOWED
+        'Discord Rich Presence' => 'discordRPC',
+        #end
+        'Blah Blah Blah' => 'test',
+        'afsdfsdff' => 'sfsdfafAAFSFAFAFA'
     ];
 
     var selectionList:OptionSelectionList;
@@ -25,8 +28,21 @@ class GameplaySettingsSubState extends FlxSubState {
         selectionList = new OptionSelectionList(SelectionScrollType.STICK_OUT, SelectionAlignType.LEFT, 200);
         add(selectionList);
 
-        for (o in options) {
-            selectionList.add(o);
+        var newY:Float = (FlxG.height / 2);
+        var keys:Array<String> = [];
+
+        for (k in options.keys()) {
+            keys.push(k);
+        }
+
+        #if desktop
+        keys.reverse();
+        #end
+
+        for (o in keys) {
+            var youDeadBuiltLikeAnApple:OptionCheckBox = new OptionCheckBox(20, newY, o, options.get(o), false);
+            selectionList.add(youDeadBuiltLikeAnApple);
+            newY += 200;
         }
     }
 

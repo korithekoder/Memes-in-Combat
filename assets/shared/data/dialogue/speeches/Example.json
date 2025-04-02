@@ -1,0 +1,30 @@
+[
+    {
+        "responsefrom": [],
+        "text": "This is the first bubble used because the responsefrom array is empty!",
+        "speaker": "example-speaker",
+        "emotion": "example-emotion",
+        "responses": [
+            "i will go to the first bubble that has this response in its responsefrom array!",
+            "i will go to the end because it has this response in it!"
+        ]
+    },
+    {
+        "responsefrom": [
+            "i will go to the first bubble that has this response in its responsefrom array!"
+        ],
+        "text": "I will stop and end the dialogue because there are no responses!",
+        "speaker": "example-speaker",
+        "emotion": "example-emotion",
+        "responses": []
+    },
+    {
+        "responsefrom": [
+            "i will go to the end because it has this response in it!"
+        ],
+        "text": "I will stop and end the dialogue because there are no responses!",
+        "speaker": "example-speaker",
+        "emotion": "example-emotion",
+        "responses": []
+    }
+]

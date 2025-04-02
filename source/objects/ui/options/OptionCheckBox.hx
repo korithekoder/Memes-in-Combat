@@ -40,7 +40,6 @@ class OptionCheckBox extends Option {
             if (this._isValidBoolPref) {
                 this._isChecked = !this._isChecked;
                 ClientPrefs.setClientPreference(this._option, this._isChecked);
-                this._displayText.text = '$name: ${(_isChecked) ? 'ON' : 'OFF'}';
                 this._checkmarkSymbol.loadGraphic(PathUtil.ofImage((_isChecked) ? 'checked' : 'unchecked'));
                 this._checkmarkSymbol.updateHitbox();
                 FlxG.sound.play(PathUtil.ofSound((_isChecked) ? 'vine-boom' : 'bruh'));

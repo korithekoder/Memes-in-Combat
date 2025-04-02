@@ -16,7 +16,7 @@ import flixel.util.FlxTimer;
 enum SelectionScrollType {
     DEFAULT;  // Regular scrolling, nothing fancy
     STICK_OUT;  // Makes the selected option "stick out", similar to the options on the main menu
-    NONE;  // No scrolling at all
+    NONE;  // No scrolling at all (might depreciate later since you can just make individual clickable texts :p)
 }
 
 /**
@@ -120,7 +120,8 @@ class OptionSelectionList extends FlxTypedGroup<Option> {
     }
 
     private function _scrollThroughOptions(dir:Int):Void {
-        if (!this._canScroll) return;  // To prevent the user from spamming the up/down buttons and breaking shit
+        // To prevent the user from spamming the up/down buttons and breaking shit
+        if (!this._canScroll) return;
 
         // To prevent index out of bounds errors
         if (dir > 0) {

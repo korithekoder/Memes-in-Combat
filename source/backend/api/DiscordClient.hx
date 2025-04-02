@@ -10,7 +10,7 @@ import sys.thread.Thread;
 
 /**
  * Class that handles Discord rich presence for the client's
- * 'Activity' box.
+ * "Activity" box.
  */
 class DiscordClient {
 
@@ -27,7 +27,7 @@ class DiscordClient {
         _presence.startTimestamp = Math.floor(Sys.time());
 
         // Start a thread that runs in the background which
-        // makes regular callbacks back to Discord
+        // makes regular callbacks to Discord
         Thread.create(() -> {
             // Keep looping until the game exits
             while (true) {
@@ -41,9 +41,16 @@ class DiscordClient {
         // Add an event listener that shuts down Discord rich presence
         // when the game closes
         Application.current.window.onClose.add(() -> {
-            Discord.Shutdown();
-            FlxG.log.add('Discord rich presence shut down successfully!');
+            shutdown();
         });
+    }
+
+    /**
+     * Shutdowns Discord rich presence.
+     */
+    public static function shutdown():Void {
+        Discord.Shutdown();
+        FlxG.log.add('Discord rich presence shut down successfully!');
     }
 
     /**
@@ -57,7 +64,6 @@ class DiscordClient {
         _presence.details = details;
         _presence.state = state;
         _presence.largeImageKey = largeImageKey;
-
         Discord.UpdatePresence(RawConstPointer.addressOf(_presence));
     }
 }

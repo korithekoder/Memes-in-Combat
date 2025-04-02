@@ -16,7 +16,7 @@
 	<!-- ___________________________ Memes in Combat ___________________________ -->
 
 	<!-- Should the game display in the client's Discord "Activity" box? -->
-	<define name="DISCORD_ALLOWED" if="desktop" />
+	<define name="DISCORD_ALLOWED" if="windows" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 

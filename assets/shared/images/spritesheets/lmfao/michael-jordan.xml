@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+    <TextureAtlas imagePath="michael-jordan.png">
+    <SubTexture name="michael-jordan_0" x="0" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_1" x="498" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_2" x="0" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_3" x="498" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_4" x="996" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_5" x="996" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_6" x="0" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_7" x="498" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_8" x="996" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_9" x="1494" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_10" x="1494" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_11" x="1494" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_12" x="0" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_13" x="498" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_14" x="996" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_15" x="1494" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_16" x="1992" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_17" x="1992" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_18" x="1992" y="996" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_19" x="1992" y="1494" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_20" x="0" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_21" x="498" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_22" x="996" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_23" x="1494" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_24" x="1992" y="1992" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+    <SubTexture name="michael-jordan_25" x="2490" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
+</TextureAtlas>

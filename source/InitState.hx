@@ -41,6 +41,12 @@ class InitState extends FlxState {
 		// so it's extremely important to keep this line here!
 		ClientPrefs.loadAll();
 
+		// Load the user's progress
+		SaveUtil.loadUserProgress();
+
+		// Load the random bullshit for the player
+		SaveUtil.loadUserRandomBullshit();
+
 		// Setup Discord rich presence
 		#if DISCORD_ALLOWED
 		if (ClientPrefs.options.discordRPC) {
