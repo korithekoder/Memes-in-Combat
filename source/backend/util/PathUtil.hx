@@ -5,7 +5,9 @@ import flixel.FlxG;
 /**
  * Utility class that creates and returns paths to assets or other files.
  */
-class PathUtil {
+final class PathUtil {
+
+    private function new() {}
     
     /**
      * Get the path of an image asset.

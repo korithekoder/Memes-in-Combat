@@ -12,10 +12,12 @@ import sys.thread.Thread;
  * Class that handles Discord rich presence for the client's
  * "Activity" box.
  */
-class DiscordClient {
+final class DiscordClient {
 
     private static var _presence:DiscordRichPresence = new DiscordRichPresence();
     private static var _clientId:String = '1350914945704923288';  // Client ID for the Discord application
+
+    private function new() {}
 
     /**
      * Initializes Discord rich presence.

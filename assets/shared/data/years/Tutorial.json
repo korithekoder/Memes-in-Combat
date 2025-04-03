@@ -1,0 +1,76 @@
+{
+    "level": {
+        "size": {
+            "width": 3,
+            "height": 3
+        }
+    },
+    "metadata": {
+        "music": [
+            "Promises",
+            "Best Memories",
+            "Jam Out By Myself"
+        ],
+        "mapinfo": {
+            "spritesheet": "tutorial-map"
+        },
+        "tiletypes": {
+            "land1": {
+                "animated": false,
+                "frames": 0
+            },
+            "land2": {
+                "animated": false,
+                "frames": 0
+            },
+            "road": {
+                "animated": false,
+                "frames": 0
+            }
+        }
+    },
+    "map": [
+        [
+            {
+                "id": "land1",
+                "rotation": 0
+            },
+            {
+                "id": "land2",
+                "rotation": 0
+            },
+            {
+                "id": "land1",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "id": "road",
+                "rotation": 0
+            },
+            {
+                "id": "road",
+                "rotation": 0
+            },
+            {
+                "id": "road",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "id": "land2",
+                "rotation": 0
+            },
+            {
+                "id": "land1",
+                "rotation": 0
+            },
+            {
+                "id": "land2",
+                "rotation": 0
+            }
+        ]
+    ]
+}

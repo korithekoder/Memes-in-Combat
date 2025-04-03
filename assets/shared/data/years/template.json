@@ -6,8 +6,18 @@
         }
     },
     "metadata": {
-        "map": {
+        "mapinfo": {
             "spritesheet": "example"
+        },
+        "tiletypes": {
+            "type1": {
+                "animated": false,
+                "frames": 0
+            },
+            "type2": {
+                "animated": true,
+                "frames": 4
+            }
         }
     },
     "map": [

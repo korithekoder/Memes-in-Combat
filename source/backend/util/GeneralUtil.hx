@@ -1,5 +1,6 @@
 package backend.util;
 
+import haxe.Json;
 import backend.api.DiscordClient;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
@@ -14,7 +15,9 @@ import flixel.FlxG;
 /**
  * Utility class which holds functions that don't fit into any other category.
  */
-class GeneralUtil {
+final class GeneralUtil {
+
+    private function new() {}
 
     /**
      * Fades into a state with a cool transition effect.
@@ -36,9 +39,9 @@ class GeneralUtil {
     /**
      * Play menu music ***if*** it hasn't already started.
      */
-    public static function playMenuMusic():Void {
+    public static function playMenuMusic(volume:Float = 1):Void {
         if (CacheUtil.canPlayMenuMusic) {
-            FlxG.sound.playMusic(PathUtil.ofMusic('Jam Out By Myself'), 1, true);
+            FlxG.sound.playMusic(PathUtil.ofMusic('Menu'), volume, true);
             CacheUtil.canPlayMenuMusic = false;
         }
     }

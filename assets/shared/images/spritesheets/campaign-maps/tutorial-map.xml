@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="tutorial-map.png">
+    <SubTexture name="tutorial-map_land1" x="0" y="0" width="200" height="200" frameX="0" frameY="0" frameWidth="200" frameHeight="200" />
+    <SubTexture name="tutorial-map_land2" x="200" y="0" width="200" height="200" frameX="0" frameY="0" frameWidth="200" frameHeight="200" />
+    <SubTexture name="tutorial-map_road" x="0" y="200" width="201" height="200" frameX="0" frameY="0" frameWidth="200" frameHeight="200" />
+</TextureAtlas>

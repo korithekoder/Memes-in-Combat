@@ -44,7 +44,7 @@ import haxe.Exception;
  * To access controls, use `backend.Controls`. (**TIP**: Read `backend.Controls`'s
  * documentation for accessing if binds are pressed!)
  */
-class ClientPrefs {
+final class ClientPrefs {
 
     /**
      * The user's settings and preferences. Note that this does not include
@@ -59,6 +59,8 @@ class ClientPrefs {
 	 */
     public static var controlsKeyboard(get, never):Map<String, FlxKey>;
 	private static var _controlsKeyboard:Map<String, FlxKey>;
+
+    private function new() {}
 
     // ------------------------------
     //      GETTERS AND SETTERS

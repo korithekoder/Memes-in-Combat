@@ -38,7 +38,7 @@ import flixel.FlxG;
  * private inline function get_YOUR_BIND_JUST_RELEASED():Bool return justReleased('your_bind_id');
  * ```
  */
-class Controls {
+final class Controls {
 
     // Movement (pressed)
     public var M_UP_PRESSED(get, never):Bool;
@@ -89,6 +89,8 @@ class Controls {
     // Other (just pressed)
     public var FULLSCREEN_JUST_PRESSED(get, never):Bool;
     private inline function get_FULLSCREEN_JUST_PRESSED():Bool return justPressed('fullscreen');
+
+    private function new() {}
 
     /**
      * Object used to get the pressed, just pressed and just released controls.

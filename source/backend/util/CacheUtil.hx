@@ -5,7 +5,7 @@ package backend.util;
  * Examples of general temporary data can be things such as the last volume used, the
  * years the player has unlocked, etc.
  */
-class CacheUtil {
+final class CacheUtil {
     
     /**
      * The last volume that the player had set before the game loses focus.
@@ -44,7 +44,21 @@ class CacheUtil {
     public static var selectedYear:String;
 
     /**
+     * The current data for the selected year.
+     * This is pulled from `shared/data/years`, and its name should
+     * match the year ID, or otherwise it will not work.
+     */
+    public static var currentYearData:Dynamic;
+
+    /**
+     * The current music soundtracks for the selected year.
+     */
+    public static var currentYearSoundtracks:Array<String> = [];
+
+    /**
      * Is the dialogue finished?
      */
     public static var isDialogueFinished:Bool = true;
+
+    private function new() {}
 }

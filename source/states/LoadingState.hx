@@ -1,12 +1,14 @@
 package states;
 
-import flixel.FlxSprite;
 import backend.data.Constants;
+import backend.util.AssetUtil;
+import backend.util.CacheUtil;
 import backend.util.GeneralUtil;
-import flixel.util.FlxTimer;
-import flixel.util.FlxColor;
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 /**
  * State that is switched to before the play state.
@@ -21,10 +23,19 @@ class LoadingState extends FlxTransitionableState {
 
         FlxG.sound.music.stop();
 
+		// Make the screen only
+		// b l a c k
         bg = new FlxSprite();
         bg.makeGraphic(FlxG.width + 50, FlxG.height + 50);
         bg.color = FlxColor.BLACK;
         add(bg);
+
+		// Set the current year data in the CacheUtil
+		CacheUtil.currentYearData = AssetUtil.getJsonData('years/${CacheUtil.selectedYear}');
+        CacheUtil.currentYearSoundtracks = CacheUtil.currentYearData.metadata.music;
+
+		// Precache all of the music soundtracks
+		AssetUtil.precacheSoundArray(CacheUtil.currentYearSoundtracks);
 
         new FlxTimer().start(0.5, (_) -> { 
             GeneralUtil.fadeIntoState(new PlayState(), Constants.TRANSITION_DURATION, false);

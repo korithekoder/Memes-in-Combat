@@ -4,7 +4,6 @@ import backend.data.ClientPrefs;
 #if DISCORD_ALLOWED
 import backend.api.DiscordClient;
 #end
-import objects.ui.ClickableText;
 import backend.Controls;
 import backend.data.Constants;
 import backend.util.CacheUtil;
@@ -19,6 +18,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import objects.ui.ClickableText;
 
 /**
  * State that displays the main menu.
@@ -51,7 +51,7 @@ class MainMenuState extends FlxTransitionableState {
     override public function create() {
 
         // Start the main menu music
-        GeneralUtil.playMenuMusic();
+        GeneralUtil.playMenuMusic(0);
 
         // Setup and add the title text
         titleText = new FlxText('Memes in Combat');
@@ -107,7 +107,7 @@ class MainMenuState extends FlxTransitionableState {
                     GeneralUtil.fadeIntoState(new CampaignMenuState(), Constants.TRANSITION_DURATION, false); 
                 });
             },
-            'Options' => () -> { 
+            'Options' => () -> {
                 _centerButton(buttonGroup.members[1]);
                 new FlxTimer().start(1, (_) -> {
                     GeneralUtil.fadeIntoState(new OptionsMenuState(), Constants.TRANSITION_DURATION, false); 
@@ -182,6 +182,9 @@ class MainMenuState extends FlxTransitionableState {
             ease: FlxEase.quadInOut
         });
 
+        // Tween the intro music to gradually increase it
+        FlxTween.tween(FlxG.sound.music, { volume: 1 }, 5, { type: FlxTweenType.ONESHOT });
+
         // Start the "Press any key to skip" text tween that makes it fade in
         if (CacheUtil.canSkipIntro) {
             FlxTween.tween(pressAnyKeyText, { alpha: 1 }, 2, {
@@ -229,7 +232,7 @@ class MainMenuState extends FlxTransitionableState {
         var stage:Int = 0;
         introStageTimer1.start(
             // Time
-            2.5,
+            2,
             // Callback
             (timer:FlxTimer) -> {
                 stage++;
@@ -239,21 +242,21 @@ class MainMenuState extends FlxTransitionableState {
             9
         );
 
-        new FlxTimer().start(
-            // Time
-            22.5,
-            // Callback
-            (timer:FlxTimer) -> {
-                introStageTimer2.start(
-                    0.5,
-                    (timer:FlxTimer) -> {
-                        stage++;
-                        _switchIntroStage(stage);
-                    },
-                    4
-                );
-            }
-        );
+        // new FlxTimer().start(
+        //     // Time
+        //     18,
+        //     // Callback
+        //     (timer:FlxTimer) -> {
+        //         introStageTimer2.start(
+        //             0.5,
+        //             (timer:FlxTimer) -> {
+        //                 stage++;
+        //                 _switchIntroStage(stage);
+        //             },
+        //             4
+        //         );
+        //     }
+        // );
     }
 
     private function _switchIntroStage(stage:Int):Void {
@@ -277,14 +280,6 @@ class MainMenuState extends FlxTransitionableState {
             case (8):
                 _setIntroText(chosenSplashText[1], true);
             case (9):
-                _setIntroText('');
-            case (10):
-                _setIntroText('Memes', true);
-            case (11):
-                _setIntroText('in', true);
-            case (12):
-                _setIntroText('Combat', true);
-            case (13):
                 _setupMainMenu();
         }
     }

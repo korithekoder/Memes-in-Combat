@@ -8,7 +8,9 @@ import flixel.util.FlxSave;
 /**
  * Utility class for handling and saving user save data.
  */
-class SaveUtil {
+final class SaveUtil {
+
+    private function new() {}
     
     /**
      * Save ***ALL*** of the user's preferences and progress.
@@ -44,11 +46,10 @@ class SaveUtil {
         optionsSave.close();
 
         // Log if all options were saved
-        if (didOptionsSave) {
+        if (didOptionsSave) 
             FlxG.log.add('All options have been saved!');
-        } else {
+        else 
             FlxG.log.warn('All options failed to save.');
-        }
     }
 
     /**

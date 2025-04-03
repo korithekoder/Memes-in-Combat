@@ -6,7 +6,7 @@ import flixel.input.keyboard.FlxKey;
 /**
  * Class that holds all of the general values that do not change.
  */
-class Constants {
+final class Constants {
     
     /**
      * The default controls for the player. This is usually used when
@@ -116,4 +116,6 @@ class Constants {
         ['2009', null, null],
         ['2022', null, null]
     ];
+
+    private function new() {}
 }
