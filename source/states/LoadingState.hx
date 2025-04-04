@@ -32,7 +32,10 @@ class LoadingState extends FlxTransitionableState {
 
 		// Set the current year data in the CacheUtil
 		CacheUtil.currentYearData = AssetUtil.getJsonData('years/${CacheUtil.selectedYear}');
+        CacheUtil.currentYearLevelData = CacheUtil.currentYearData.level;
+        CacheUtil.currentYearMetadata = CacheUtil.currentYearData.metadata;
         CacheUtil.currentYearSoundtracks = CacheUtil.currentYearData.metadata.music;
+        CacheUtil.currentYearMapData = CacheUtil.currentYearData.map;
 
 		// Precache all of the music soundtracks
 		AssetUtil.precacheSoundArray(CacheUtil.currentYearSoundtracks);

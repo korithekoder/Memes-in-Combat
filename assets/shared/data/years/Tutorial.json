@@ -3,7 +3,24 @@
         "size": {
             "width": 3,
             "height": 3
-        }
+        },
+        "tiletypes": [
+            {
+                "id": "land1",
+                "animated": false,
+                "frames": 0
+            },
+            {
+                "id": "land2",
+                "animated": false,
+                "frames": 0
+            },
+            {
+                "id": "road",
+                "animated": false,
+                "frames": 0
+            }
+        ]
     },
     "metadata": {
         "music": [
@@ -13,20 +30,6 @@
         ],
         "mapinfo": {
             "spritesheet": "tutorial-map"
-        },
-        "tiletypes": {
-            "land1": {
-                "animated": false,
-                "frames": 0
-            },
-            "land2": {
-                "animated": false,
-                "frames": 0
-            },
-            "road": {
-                "animated": false,
-                "frames": 0
-            }
         }
     },
     "map": [

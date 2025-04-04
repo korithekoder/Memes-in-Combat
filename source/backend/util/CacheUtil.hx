@@ -51,6 +51,22 @@ final class CacheUtil {
     public static var currentYearData:Dynamic;
 
     /**
+     * The current level data for the selected year.
+     * This holds information about things such as the size of the map.
+     */
+    public static var currentYearLevelData:Dynamic;
+
+    /**
+     * The current metadata for the selected year.
+     */
+    public static var currentYearMetadata:Dynamic;
+
+    /**
+     * The current data that is used to generate the map for the selected year.
+     */
+    public static var currentYearMapData:Array<Array<Dynamic>> = [];
+
+    /**
      * The current music soundtracks for the selected year.
      */
     public static var currentYearSoundtracks:Array<String> = [];

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-    <TextureAtlas imagePath="michael-jordan.png">
+<TextureAtlas imagePath="michael-jordan.png">
     <SubTexture name="michael-jordan_0" x="0" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
     <SubTexture name="michael-jordan_1" x="498" y="0" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />
     <SubTexture name="michael-jordan_2" x="0" y="498" width="498" height="498" frameX="0" frameY="0" frameWidth="498" frameHeight="498" />

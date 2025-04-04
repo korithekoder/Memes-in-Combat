@@ -3,21 +3,27 @@
         "size": {
             "width": 3,
             "height": 3
-        }
-    },
-    "metadata": {
-        "mapinfo": {
-            "spritesheet": "example"
         },
-        "tiletypes": {
-            "type1": {
+        "tiletypes": [
+            {
+                "id": "type1",
                 "animated": false,
                 "frames": 0
             },
-            "type2": {
+            {
+                "id": "type2",
                 "animated": true,
                 "frames": 4
             }
+        ]
+    },
+    "metadata": {
+        "music": [
+            "example-music-1",
+            "example-music-2"
+        ],
+        "mapinfo": {
+            "spritesheet": "example"
         }
     },
     "map": [
