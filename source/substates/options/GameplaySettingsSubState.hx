@@ -49,7 +49,7 @@ class GameplaySettingsSubState extends FlxSubState {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
-        if (Controls.binds.UI_BACK_JUST_PRESSED) {
+        if (Controls.binds.UI_BACK_JUST_PRESSED || FlxG.mouse.justPressedRight) {
             close();
         }
     }

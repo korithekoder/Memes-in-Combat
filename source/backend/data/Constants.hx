@@ -13,11 +13,17 @@ final class Constants {
      * the player wishes to reset all of their binds.
      */
 	public static final DEFAULT_CONTROLS_KEYBOARD:Map<String, FlxKey> = [
-        // Movement
+        // Movement (memes)
         'm_up'       => FlxKey.W,
         'm_left'     => FlxKey.A,
         'm_down'     => FlxKey.S,
         'm_right'    => FlxKey.D,
+
+        // Movement (camera)
+        'cam_up'     => FlxKey.UP,
+        'cam_left'   => FlxKey.LEFT,
+        'cam_down'   => FlxKey.DOWN,
+        'cam_right'  => FlxKey.RIGHT,
 
         // UI
         'ui_left'    => FlxKey.LEFT,
@@ -65,12 +71,16 @@ final class Constants {
         ['we gonna do', 'this thang'],
         ['bruh', 'moment'],
         ['I', 'AM STEVE'],
+        ['THIS...', 'is an  E N D E R  P E A R L'],
+        ['CHICKEN JOCKEY', 'asl fqeflQKH FQKEH ADsff'],
         ['I am gonna', 'tickle your toes :3'],
         ['why the fuck', 'are you playing this game??'],
         ['friday night funkin', 'peak rhythm game imo'],
         ['you\'re dead built', 'like an apple'],
+        ['you\'re dead built', 'like a *insert main subject of convo here*'],
         ['swag shit', 'money money'],
         ['uwu', 'owo'],
+        ['i would like my check please', 'give it to me right  N E O W'],
         ['if you\'re reading this', 'you like men'],
         ['eeeeeeeuuuuuuuuuuuuuu', 'mmmmmmhhhhhhhhhh'],
         ['eeeeeeeeeeeeeeeeeeeeeeeee', 'eeeeeeeeeeeeeeeeeeeeeeeee'],
@@ -86,7 +96,9 @@ final class Constants {
         ['"CUMpany"', '-dfam 2/21/2025'],
         ['"YOUCH!! *says in a zesty tone*"', '-dfam 3/16/2025'],
         ['erm', 'what the sigma'],
-        ['skibidi', 'rizzler']
+        ['skibidi', 'rizzler'],
+        ['"19 dola hairbrush, who wants it?"', '-dfam'],
+        ['"SHUUTT SHUUUPUPUPUPP"', '-kori 4/4/2025']
     ];
 
     /**
@@ -116,6 +128,16 @@ final class Constants {
         ['2009', null, null],
         ['2022', null, null]
     ];
+
+    /**
+     * The moving speed of the camera when the player is moving it with the applied key binds.
+     */
+    public static final MAP_CAMERA_MOVE_SPEED:Float = 20;
+
+    /**
+     * Floating point number that determines how much the camera zooms in/out.
+     */
+    public static final MAP_CAMERA_ZOOM_INCREMENT:Float = 0.08;
 
     private function new() {}
 }

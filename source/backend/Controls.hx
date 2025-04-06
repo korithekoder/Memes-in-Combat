@@ -40,7 +40,7 @@ import flixel.FlxG;
  */
 final class Controls {
 
-    // Movement (pressed)
+    // Movement (memes) (pressed)
     public var M_UP_PRESSED(get, never):Bool;
     public var M_LEFT_PRESSED(get, never):Bool;
     public var M_DOWN_PRESSED(get, never):Bool;
@@ -49,6 +49,16 @@ final class Controls {
     private inline function get_M_LEFT_PRESSED():Bool return pressed('m_left');
     private inline function get_M_DOWN_PRESSED():Bool return pressed('m_down');
     private inline function get_M_RIGHT_PRESSED():Bool return pressed('m_right');
+
+    // Movement (camera) (pressed)
+    public var CAM_UP_PRESSED(get, never):Bool;
+    public var CAM_LEFT_PRESSED(get, never):Bool;
+    public var CAM_DOWN_PRESSED(get, never):Bool;
+    public var CAM_RIGHT_PRESSED(get, never):Bool;
+    private inline function get_CAM_UP_PRESSED():Bool return pressed('cam_up');
+    private inline function get_CAM_LEFT_PRESSED():Bool return pressed('cam_left');
+    private inline function get_CAM_DOWN_PRESSED():Bool return pressed('cam_down');
+    private inline function get_CAM_RIGHT_PRESSED():Bool return pressed('cam_right');
 
     // UI (pressed)
     public var UI_LEFT_PRESSED(get, never):Bool;

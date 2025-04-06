@@ -221,7 +221,7 @@ class MainMenuState extends FlxTransitionableState {
 
         // If the user presses the back button, then
         // just simply close the game :p
-		if (Controls.binds.UI_BACK_JUST_PRESSED) {
+		if (Controls.binds.UI_BACK_JUST_PRESSED || FlxG.mouse.justPressedRight) {
             GeneralUtil.closeGame();
         }
     }

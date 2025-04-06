@@ -96,7 +96,7 @@ class OptionsMenuState extends FlxTransitionableState {
     override function update(elapsed:Float) {
         super.update(elapsed);
 
-		if (Controls.binds.UI_BACK_JUST_PRESSED) {
+		if (Controls.binds.UI_BACK_JUST_PRESSED || FlxG.mouse.justPressedRight) {
             GeneralUtil.fadeIntoState(new MainMenuState(), Constants.TRANSITION_DURATION);
         }
     }

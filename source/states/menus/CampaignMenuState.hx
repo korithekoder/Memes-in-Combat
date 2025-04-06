@@ -89,9 +89,9 @@ class CampaignMenuState extends FlxTransitionableState {
 
         if (!michaelJordan.visible) {
             // Check if the user wants to go back to the main menu or play the selected year
-			if (Controls.binds.UI_BACK_JUST_PRESSED) { // Go back to the main menu
+			if (Controls.binds.UI_BACK_JUST_PRESSED || FlxG.mouse.justPressedRight) { // Go back to the main menu
                 GeneralUtil.fadeIntoState(new MainMenuState(), Constants.TRANSITION_DURATION);
-            } else if (Controls.binds.UI_SELECT_JUST_PRESSED) {  // Play the selected year
+            } else if (Controls.binds.UI_SELECT_JUST_PRESSED || (FlxG.mouse.justPressed && FlxG.mouse.viewX > (FlxG.width - 350))) {  // Play the selected year
 				var year:CampaignYearIcon = campaignYears.members[currentYear];
 
                 // Check if the year is unlocked
@@ -107,7 +107,7 @@ class CampaignMenuState extends FlxTransitionableState {
                     }
 
 					// Assign the selected year for the loading state
-					CacheUtil.selectedYear = year.get_year();
+					CacheUtil.selectedYear = year.year;
 
                     // Center the selected year
                     for (obj in year) {
@@ -128,19 +128,24 @@ class CampaignMenuState extends FlxTransitionableState {
             }
         }
 
+        if (FlxG.keys.justPressed.SPACE) trace(currentYear);
+        if (FlxG.keys.justPressed.SPACE) trace(campaignYears.length - 1);
+
         if (!michaelJordan.visible && !hasSelectedYear) {
             // Scroll through the years
-            if (Controls.binds.UI_DOWN_PRESSED) {
-                if (canScroll && !(currentYear >= campaignYears.length - 1)) {
-                    FlxG.sound.play(PathUtil.ofSound('blip'));
-                    currentYear++;
-                    _scroll(-1);
-                }
-            } else if (Controls.binds.UI_UP_PRESSED) {
-                if (canScroll && !(currentYear <= 0)) {
-                    FlxG.sound.play(PathUtil.ofSound('blip'));
-                    currentYear--;
+            if (Controls.binds.UI_UP_PRESSED) {
+                _scroll(1);
+            } else if (Controls.binds.UI_DOWN_PRESSED) {
+                _scroll(-1);
+            }
+
+            // Scroll through the years with the mouse wheel
+            if (FlxG.mouse.wheel != 0) {
+                // Scroll in the direction of the mouse wheel
+                if (FlxG.mouse.wheel > 0) {
                     _scroll(1);
+                } else {
+                    _scroll(-1);
                 }
             }
         }
@@ -182,6 +187,11 @@ class CampaignMenuState extends FlxTransitionableState {
     private function _scroll(dir:Int, duration:Float = 0.1):Void {
         // If the user can't scroll, just break out of the function and do nothing
         if (!canScroll) return;
+        if ((currentYear + (dir * -1)) < 0) return;
+        if ((currentYear + (dir * -1)) > campaignYears.length - 1) return;
+        // Change the current year and play a sound
+        FlxG.sound.play(PathUtil.ofSound('blip'));
+        currentYear += dir * -1;
         // Scroll the years to make it look :sparkles: fancy :sparkles:
         for (year in campaignYears.members) {
             for (obj in year.members) {

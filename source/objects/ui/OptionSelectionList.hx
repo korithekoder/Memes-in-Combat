@@ -102,7 +102,16 @@ class OptionSelectionList extends FlxTypedGroup<Option> {
                 _scrollThroughOptions(-1);
             }
 
-            if (Controls.binds.UI_SELECT_JUST_PRESSED) {
+            if (FlxG.mouse.wheel != 0) {
+                // Scroll through the options based on the mouse wheel movement
+                if (FlxG.mouse.wheel > 0) {
+                    _scrollThroughOptions(1);
+                } else {
+                    _scrollThroughOptions(-1);
+                }
+            }
+
+            if (Controls.binds.UI_SELECT_JUST_PRESSED || FlxG.mouse.justPressed) {
                 this.members[this._currentSelected].onSelected();
             }
         }

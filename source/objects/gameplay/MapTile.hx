@@ -20,9 +20,9 @@ class MapTile extends FlxSprite {
 
     /**
      * The rotation type of `this` tile.
-     * - 1 = 90 degrees
-     * - 2 = 180 degrees
-     * - 3 = 270 degrees
+     * - 0 = 90 degrees
+     * - 1 = 180 degrees
+     * - 2 = 270 degrees
      */
     public var rotation:Float = 1;
 
