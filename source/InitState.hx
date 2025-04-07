@@ -92,21 +92,24 @@ class InitState extends FlxState {
 
 		// Minimize volume when the window is out of focus
 		Application.current.window.onFocusIn.add(() -> {
-			// Set back to one decimal place (0.1) when the screen gains focus again
-			// (note that if the user had the volume all the way down, it will be set to zero)
-			FlxG.sound.volume = (!(Math.abs(FlxG.sound.volume) < FlxMath.EPSILON)) ? 0.1 : 0;
-			CacheUtil.isFocused = true;
-			// Set the volume back to the last volume used
-			FlxTween.num(FlxG.sound.volume, CacheUtil.lastVolumeUsed, 0.3, {type: FlxTweenType.ONESHOT}, (v) -> {
-				FlxG.sound.volume = v;
-			});
+			// Bring the volume back up when the window is focused again
+			if (ClientPrefs.options.minimizeVolume && !CacheUtil.isWindowFocused) {
+				// Set back to one decimal place (0.1) when the screen gains focus again
+				// (note that if the user had the volume all the way down, it will be set to zero)
+				FlxG.sound.volume = (!(Math.abs(FlxG.sound.volume) < FlxMath.EPSILON)) ? 0.1 : 0;
+				CacheUtil.isWindowFocused = true;
+				// Set the volume back to the last volume used
+				FlxTween.num(FlxG.sound.volume, CacheUtil.lastVolumeUsed, 0.3, {type: FlxTweenType.ONESHOT}, (v) -> {
+					FlxG.sound.volume = v;
+				});
+			}
 		});
 		Application.current.window.onFocusOut.add(() -> {
 			// Minimize the volume when the window loses focus
-			if (ClientPrefs.options.minimizeVolume) {
+			if (ClientPrefs.options.minimizeVolume && CacheUtil.isWindowFocused) {
 				// Set the last volume used to the current volume
 				CacheUtil.lastVolumeUsed = FlxG.sound.volume;
-				CacheUtil.isFocused = false;
+				CacheUtil.isWindowFocused = false;
 				// Tween the volume to 0.03
 				FlxTween.num(FlxG.sound.volume, (!(Math.abs(FlxG.sound.volume) < FlxMath.EPSILON)) ? 0.03 : 0, 0.3, {type: FlxTweenType.ONESHOT}, (v) -> {
 					FlxG.sound.volume = v;

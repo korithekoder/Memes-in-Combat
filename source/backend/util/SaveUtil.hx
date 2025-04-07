@@ -1,7 +1,7 @@
 package backend.util;
 
-import backend.data.Constants;
 import backend.data.ClientPrefs;
+import backend.data.Constants;
 import flixel.FlxG;
 import flixel.util.FlxSave;
 
@@ -34,7 +34,7 @@ final class SaveUtil {
         optionsSave.data.options = ClientPrefs.get_options();
 
         // Save the last volume used
-        optionsSave.data.lastVolume = (CacheUtil.isFocused) ? FlxG.sound.volume : CacheUtil.lastVolumeUsed;
+		optionsSave.data.lastVolume = (CacheUtil.isWindowFocused) ? FlxG.sound.volume : CacheUtil.lastVolumeUsed;
 
         // Save if the user had fullscreen enabled
         optionsSave.data.fullscreen = FlxG.fullscreen;

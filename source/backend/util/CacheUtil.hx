@@ -31,7 +31,7 @@ final class CacheUtil {
 	/**
 	 * Is the game's window focused?
 	 */
-	public static var isFocused:Bool = true;
+	public static var isWindowFocused:Bool = true;
 
     /**
      * The years that the player has unlocked.

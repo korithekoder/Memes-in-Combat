@@ -1,5 +1,6 @@
 package states.menus;
 
+import substates.options.OtherSettingsSubState;
 import flixel.FlxSubState;
 import substates.options.GameplaySettingsSubState;
 import backend.util.PathUtil;
@@ -42,7 +43,8 @@ class OptionsMenuState extends FlxTransitionableState {
         FlxG.camera.bgColor = FlxColor.PINK;
 
         optionsOnSelect = [
-            'Gameplay' => () -> _openOptionsMenu(new GameplaySettingsSubState())
+            'Gameplay' => () -> _openOptionsMenu(new GameplaySettingsSubState()),
+            'Other' => () -> _openOptionsMenu(new OtherSettingsSubState()),
         ];
 
         optionsGroup = new FlxTypedGroup<ClickableText>();
